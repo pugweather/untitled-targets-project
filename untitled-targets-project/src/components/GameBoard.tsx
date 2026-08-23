@@ -1,10 +1,10 @@
 import { useState } from "react"
 import styles from './Gameboard.module.css'
-
+import type {Target} from '../types'
 
 export default function GameBoard() {
 
-    const initialTargets = [
+    const initialTargets: Target[] = [
         {
             left: 12,
             top: 76
@@ -29,9 +29,9 @@ export default function GameBoard() {
 
     const [targets, setTargets] = useState(initialTargets)
 
-    function clickTarget(idx) {
-        if (!idx) return
-        setTargets(prev => prev.filter((_, idx) => idx !== 0))
+    function clickTarget(idx: number) {
+        if (idx) return
+        setTargets(prev => prev.slice(1))
     }
 
     return (
@@ -43,7 +43,7 @@ export default function GameBoard() {
                             <div 
                                 className={`${styles.target} ${styles[`step${idx}`]}`} 
                                 style={{ left: targ.left + '%', top: targ.top + '%'}}
-                                onClick={clickTarget}
+                                onClick={() => clickTarget(idx)}
                                 >
                             </div>
                         )
