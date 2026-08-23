@@ -38,17 +38,35 @@ export default function GameBoard() {
         <div className={styles.page}>
             <div className={styles.board}>
                 {
-                    targets.map((targ, idx) => {
-                        return (
-                            <div 
-                                className={`${styles.target} ${styles[`step${idx}`]}`} 
-                                style={{ left: targ.left + '%', top: targ.top + '%'}}
-                                onClick={() => clickTarget(idx)}
-                                >
-                            </div>
-                        )
-                    })
+                targets.map((targ, idx) => {
+                    return (
+                        <div 
+                            className={`${styles.target} ${styles[`step${idx}`]}`} 
+                            style={{ left: targ.left + '%', top: targ.top + '%'}}
+                            onClick={() => clickTarget(idx)}
+                            >
+                        </div>
+                    )
+                })
                 }
+                <svg width="100%" height="100%" style={{position: "absolute", pointerEvents: "none", inset: "0"}}>
+                    {
+                        targets.map((targ, idx) => {
+                            // Need 2 targets to connect a line
+                            if (!targets[idx + 1]) return
+                            return (
+                            <line 
+                                key={idx} 
+                                stroke="rgba(255,255,255,0.3)"
+                                strokeWidth="2" 
+                                x1={targ.left + '%'} 
+                                y1={targ.top + '%'} 
+                                x2={targets[idx + 1]["left"] + '%'} 
+                                y2={targets[idx + 1]["top"] + '%'}/>
+                            )
+                        })
+                    }
+                </svg>
             </div>
         </div>
     )
