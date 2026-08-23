@@ -40,7 +40,7 @@
   aspect-ratio: 1 / 1;
   border-radius: 9px;
   transform: translate(-50%, -50%) scale(var(--scale, 1));
-  cursor: pointer;
+  /* cursor: pointer; */
   color: color-mix(in srgb, red, blue var(--mix, 0%));
   background: color-mix(in srgb, red, blue var(--mix, 0%));
   box-shadow: 0 0 16px 4px currentColor;
@@ -54,6 +54,7 @@
     0 0 32px 10px currentColor,
     0 0 14px rgba(255, 255, 255, 0.55);
   z-index: 1;
+  cursor: pointer;
 }
 
 .step1 { --mix: 16.67%; }
