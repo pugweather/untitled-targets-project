@@ -28,10 +28,17 @@ export default function GameBoard() {
     ]
 
     const [targets, setTargets] = useState(initialTargets)
+    const [exiting, setExiting] = useState(false)
 
     function clickTarget(idx: number) {
-        if (idx) return
+        if (idx !== 0 || exiting) return
+        setExiting(true)
+    }
+
+    function handleFadeEnd(e: React.TransitionEvent<HTMLDivElement>) {
+        if (e.propertyName !== 'opacity') return
         setTargets(prev => prev.slice(1))
+        setExiting(false)
     }
 
     return (
@@ -41,28 +48,35 @@ export default function GameBoard() {
                 targets.map((targ, idx) => {
                     return (
                         <div 
-                            className={`${styles.target} ${styles[`step${idx}`]}`} 
+                            key={`${targ.left}-${targ.top}`}
+                            className={`${styles.target} ${styles[`step${idx}`]} ${exiting && idx === 0 ? styles.exiting : ''}`}
                             style={{ left: targ.left + '%', top: targ.top + '%'}}
                             onClick={() => clickTarget(idx)}
+                            onTransitionEnd={exiting && idx === 0 ? handleFadeEnd : undefined}
                             >
                         </div>
                     )
                 })
                 }
-                <svg width="100%" height="100%" style={{position: "absolute", pointerEvents: "none", inset: "0"}}>
+                <svg
+                    className={styles.targetConnectors}
+                    width="100%"
+                    height="100%"
+                >
                     {
                         targets.map((targ, idx) => {
-                            // Need 2 targets to connect a line
-                            if (!targets[idx + 1]) return
+                            if (!targets[idx + 1]) return null
                             return (
-                            <line 
-                                key={idx} 
-                                stroke="rgba(255,255,255,0.3)"
-                                strokeWidth="2" 
-                                x1={targ.left + '%'} 
-                                y1={targ.top + '%'} 
-                                x2={targets[idx + 1]["left"] + '%'} 
-                                y2={targets[idx + 1]["top"] + '%'}/>
+                                <line
+                                    key={idx}
+                                    x1={targ.left + '%'}
+                                    y1={targ.top + '%'}
+                                    x2={targets[idx + 1].left + '%'}
+                                    y2={targets[idx + 1].top + '%'}
+                                    stroke="rgba(255, 255, 255, 0.25)"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                />
                             )
                         })
                     }

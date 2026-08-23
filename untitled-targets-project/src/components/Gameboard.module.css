@@ -45,6 +45,17 @@
   background: color-mix(in srgb, red, blue var(--mix, 0%));
   box-shadow: 0 0 16px 4px currentColor;
   z-index: 1;
+  transition:
+    opacity 0.12s ease-out,
+    transform 0.12s ease-out,
+    filter 0.12s ease-out;
+}
+
+.exiting {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(1.6);
+  filter: brightness(2.2);
+  pointer-events: none;
 }
 
 .step0 {
@@ -64,6 +75,16 @@
 .step4 { --mix: 66.67%; }
 .step5 { --mix: 83.33%; }
 .step6 { --mix: 100%; }
+
+.target-connectors {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  filter: drop-shadow(0 0 4px rgba(0, 210, 255, 0.35));
+}
 
 .hidden {
   display: none;
