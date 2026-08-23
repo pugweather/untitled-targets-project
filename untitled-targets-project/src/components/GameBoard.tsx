@@ -65,14 +65,16 @@ export default function GameBoard() {
                 >
                     {
                         targets.map((targ, idx) => {
-                            if (!targets[idx + 1]) return null
+                            const next = targets[idx + 1]
+                            if (!next) return null
                             return (
                                 <line
-                                    key={idx}
+                                    key={`${targ.left}-${targ.top}-${next.left}-${next.top}`}
+                                    className={`${styles.connector} ${exiting && idx === 0 ? styles.connectorExit : ''}`}
                                     x1={targ.left + '%'}
                                     y1={targ.top + '%'}
-                                    x2={targets[idx + 1].left + '%'}
-                                    y2={targets[idx + 1].top + '%'}
+                                    x2={next.left + '%'}
+                                    y2={next.top + '%'}
                                     stroke="rgba(255, 255, 255, 0.25)"
                                     strokeWidth="2"
                                     strokeLinecap="round"

@@ -76,7 +76,7 @@
 .step5 { --mix: 83.33%; }
 .step6 { --mix: 100%; }
 
-.target-connectors {
+.targetConnectors {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -84,6 +84,14 @@
   z-index: 0;
   pointer-events: none;
   filter: drop-shadow(0 0 4px rgba(0, 210, 255, 0.35));
+}
+
+.connector {
+  transition: opacity 0.12s ease-out;
+}
+
+.connectorExit {
+  opacity: 0;
 }
 
 .hidden {
