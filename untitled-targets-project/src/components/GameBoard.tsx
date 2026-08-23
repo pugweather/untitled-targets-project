@@ -5,6 +5,7 @@ import type {Target} from '../types'
 export default function GameBoard() {
 
     const NUM_TARGETS_TO_SHOW = 5
+    const INITIAL_COUNTDOWN = 3
 
     const course: Target[] = [
         { left: 15, top: 35 },
@@ -67,8 +68,18 @@ export default function GameBoard() {
         setTargetsRange(prev => [prev[0] + 1, Math.min(prev[1] + 1, course.length)])
         setExiting(false)
     }
+
+    function restartGame() {
+        setCountdown(INITIAL_COUNTDOWN)
+        setIsPlaying(false)
+        setTargetsRange([0, NUM_TARGETS_TO_SHOW])
+    }
+
     return (
         <div className={styles.page}>
+            <div>
+                <button onClick={restartGame}>Restart</button>
+            </div>
             <div className={styles.board}>
             {!isPlaying && <div className={styles.countdownOverlay}>{countdown}</div>}
                 {
