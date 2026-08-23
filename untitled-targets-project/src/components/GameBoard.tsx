@@ -4,43 +4,35 @@ import type {Target} from '../types'
 
 export default function GameBoard() {
 
-    const initialTargets: Target[] = [
-        {
-            left: 12,
-            top: 76
-        },
-        {
-            left: 22,
-            top: 28
-        },
-        {
-            left: 38,
-            top: 16
-        },
-        {
-            left: 55,
-            top: 35
-        },
-        {
-            left: 72,
-            top: 22
-        },
-    ]
+    const NUM_TARGETS_TO_SHOW = 5
 
-    const [targets, setTargets] = useState(initialTargets)
+    const allTargets: Target[] = Array.from({ length: 13 }, (_, i) => {
+        const progress = i / 12
+        const left = 10 + 80 * progress
+        const top = 25 + 50 * progress + (i % 2 === 0 ? -28 : 28)
+        return {
+            left: Math.round(left),
+            top: Math.round(Math.max(5, Math.min(95, top)))
+        }
+    })
+
+    const [targetsRange, setTargetsRange] = useState([0, NUM_TARGETS_TO_SHOW])
+    const [firstTargIdx, lastTargIdx] = targetsRange
+
+    const targets = allTargets.slice(firstTargIdx, lastTargIdx)
+    
     const [exiting, setExiting] = useState(false)
-
+    
     function clickTarget(idx: number) {
         if (idx !== 0 || exiting) return
         setExiting(true)
     }
-
+    
     function handleFadeEnd(e: React.TransitionEvent<HTMLDivElement>) {
         if (e.propertyName !== 'opacity') return
-        setTargets(prev => prev.slice(1))
+        setTargetsRange(prev => [prev[0] + 1, Math.min(prev[1] + 1, allTargets.length)])
         setExiting(false)
     }
-
     return (
         <div className={styles.page}>
             <div className={styles.board}>
@@ -51,7 +43,7 @@ export default function GameBoard() {
                             key={`${targ.left}-${targ.top}`}
                             className={`${styles.target} ${styles[`step${idx}`]} ${exiting && idx === 0 ? styles.exiting : ''}`}
                             style={{ left: targ.left + '%', top: targ.top + '%'}}
-                            onClick={() => clickTarget(idx)}
+                            onMouseDown={() => clickTarget(idx)}
                             onTransitionEnd={exiting && idx === 0 ? handleFadeEnd : undefined}
                             >
                         </div>
