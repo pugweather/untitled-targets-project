@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import styles from './Gameboard.module.css'
 import type {Target} from '../types'
 
@@ -29,15 +29,36 @@ export default function GameBoard() {
         { left: 91, top: 65 },
     ]
 
+    const [countdown, setCountdown] = useState<number | null>(3)
+    const [isPlaying, setIsPlaying] = useState(false)
+
     const [targetsRange, setTargetsRange] = useState([0, NUM_TARGETS_TO_SHOW])
     const [firstTargIdx, lastTargIdx] = targetsRange
 
     const targets = course.slice(firstTargIdx, lastTargIdx)
     
     const [exiting, setExiting] = useState(false)
+
+    useEffect(() => {
+        if (countdown === null) return
+        if (countdown <= 0) {
+                setIsPlaying(true)
+                setCountdown(null)
+                return
+            }
+        const countdownTimeoutId = setTimeout(() => {
+            if (countdown <= 0) {
+            } else {
+                setCountdown(prev => prev !== null ? prev - 1 : null)
+            }
+        }, 1000)
+
+        return () => clearTimeout(countdownTimeoutId)
+
+    }, [countdown])
     
     function clickTarget(idx: number) {
-        if (idx !== 0 || exiting) return
+        if (!isPlaying || idx !== 0 || exiting) return
         setExiting(true)
     }
     
@@ -49,6 +70,7 @@ export default function GameBoard() {
     return (
         <div className={styles.page}>
             <div className={styles.board}>
+            {!isPlaying && <div className={styles.countdownOverlay}>{countdown}</div>}
                 {
                 targets.map((targ, idx) => {
                     return (

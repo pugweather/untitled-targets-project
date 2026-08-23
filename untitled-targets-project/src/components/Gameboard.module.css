@@ -97,3 +97,16 @@
 .hidden {
   display: none;
 }
+
+.countdownOverlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0,0,0,0.3);
+    pointer-events: none;
+    z-index: 999;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 6rem;
+}
