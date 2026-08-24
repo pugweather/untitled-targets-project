@@ -9,29 +9,30 @@ export default function GameBoard() {
     const course: Target[] = [
         { left: 15, top: 35 },
         { left: 19, top: 65 },
-        { left: 23, top: 35 },
-        { left: 27, top: 65 },
-        { left: 31, top: 35 },
-        { left: 35, top: 65 },
-        { left: 39, top: 35 },
-        { left: 43, top: 65 },
-        { left: 47, top: 35 },
-        { left: 51, top: 65 },
-        { left: 55, top: 35 },
-        { left: 59, top: 65 },
-        { left: 63, top: 35 },
-        { left: 67, top: 65 },
-        { left: 71, top: 35 },
-        { left: 75, top: 65 },
-        { left: 79, top: 35 },
-        { left: 83, top: 65 },
-        { left: 87, top: 35 },
-        { left: 91, top: 65 },
+        // { left: 23, top: 35 },
+        // { left: 27, top: 65 },
+        // { left: 31, top: 35 },
+        // { left: 35, top: 65 },
+        // { left: 39, top: 35 },
+        // { left: 43, top: 65 },
+        // { left: 47, top: 35 },
+        // { left: 51, top: 65 },
+        // { left: 55, top: 35 },
+        // { left: 59, top: 65 },
+        // { left: 63, top: 35 },
+        // { left: 67, top: 65 },
+        // { left: 71, top: 35 },
+        // { left: 75, top: 65 },
+        // { left: 79, top: 35 },
+        // { left: 83, top: 65 },
+        // { left: 87, top: 35 },
+        // { left: 91, top: 65 },
     ]
 
     const [countdown, setCountdown] = useState<number | null>(INITIAL_COUNTDOWN)
     const [isPlaying, setIsPlaying] = useState(false)
-    const [timer, setTimer] = useState(0)
+    const [timer, setTimer] = useState<number>(0)
+
     const [targetsRange, setTargetsRange] = useState([0, NUM_TARGETS_TO_SHOW])
     const [firstTargIdx, lastTargIdx] = targetsRange
 
@@ -60,15 +61,31 @@ export default function GameBoard() {
 
     function handleFadeEnd(e: React.TransitionEvent<HTMLDivElement>) {
         if (e.propertyName !== 'opacity') return
-        setTargetsRange(prev => [prev[0] + 1, Math.min(prev[1] + 1, course.length)])
+
+        const nextTargToClick = targetsRange[0] + 1
+        const lastTargInRange = Math.min(targetsRange[1] + 1, course.length)
+        console.log(nextTargToClick, lastTargInRange)
+
+        // Restart game if won
+        const gameWon = nextTargToClick >= lastTargInRange
+        if (gameWon) {
+            setIsPlaying(false)
+            setCountdown(null)
+        }
+        setTargetsRange([nextTargToClick, lastTargInRange])
         setExiting(false)
     }
 
-    function restartGame() {
-        setCountdown(INITIAL_COUNTDOWN)
-        setIsPlaying(false)
+    // function resetGameState() {
+    //     setTargetsRange([0, NUM_TARGETS_TO_SHOW])
+    //     setCountdown(null)
+    //     setTimer(0) // Setting timer to non NULL value will start iniating the countdown to play
+    // }
+
+    function playGame() {
         setTargetsRange([0, NUM_TARGETS_TO_SHOW])
-        setTimer(0)
+        setTimer(0) // Setting timer to non NULL value will start iniating the countdown to play
+        setCountdown(INITIAL_COUNTDOWN)
     }
 
     const minutes = Math.floor(timer / 60)
@@ -80,7 +97,7 @@ export default function GameBoard() {
         <div className={styles.page}>
             <div className={styles.topButtonsWrapper}>
                 <div className={styles.timerText}>{timerText}</div>
-                <button onClick={restartGame}>Restart</button>
+                <button onClick={playGame}>Restart</button>
             </div>
             <div className={styles.board}>
                 {!isPlaying && (
