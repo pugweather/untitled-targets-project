@@ -31,15 +31,12 @@ export default function LeaderboardModal() {
                 <div className={styles.buttonsRow}>
                     <button
                         className={styles.actionButton}
-                        type="button"
-                        aria-label="Close"
+                        
                     >
                         <span className={styles.actionIcon}>&times;</span>
                     </button>
                     <button
                         className={styles.actionButton}
-                        type="button"
-                        aria-label="Restart"
                     >
                         <span className={styles.actionIcon}>&#8634;</span>
                     </button>
