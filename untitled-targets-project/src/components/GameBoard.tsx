@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react"
 import styles from './Gameboard.module.css'
-import type {Target} from '../types'
+import type { Target } from '../types'
 
 export default function GameBoard() {
-
     const NUM_TARGETS_TO_SHOW = 5
     const INITIAL_COUNTDOWN = 3
 
@@ -30,39 +29,35 @@ export default function GameBoard() {
         { left: 91, top: 65 },
     ]
 
-    const [countdown, setCountdown] = useState<number | null>(3)
+    const [countdown, setCountdown] = useState<number | null>(INITIAL_COUNTDOWN)
     const [isPlaying, setIsPlaying] = useState(false)
-
+    const [timer, setTimer] = useState(0)
     const [targetsRange, setTargetsRange] = useState([0, NUM_TARGETS_TO_SHOW])
     const [firstTargIdx, lastTargIdx] = targetsRange
 
     const targets = course.slice(firstTargIdx, lastTargIdx)
-    
     const [exiting, setExiting] = useState(false)
 
     useEffect(() => {
-        if (countdown === null) return
-        if (countdown <= 0) {
-                setIsPlaying(true)
-                setCountdown(null)
-                return
-            }
-        const countdownTimeoutId = setTimeout(() => {
-            if (countdown <= 0) {
-            } else {
-                setCountdown(prev => prev !== null ? prev - 1 : null)
-            }
-        }, 1000)
-
-        return () => clearTimeout(countdownTimeoutId)
-
+        if (countdown === null || countdown <= 0) {
+            if (countdown === 0) setIsPlaying(true)
+            return
+        }
+        const t = setTimeout(() => setCountdown(countdown - 1), 1000)
+        return () => clearTimeout(t)
     }, [countdown])
-    
+
+    useEffect(() => {
+        if (!isPlaying) return
+        const t = setTimeout(() => setTimer(prev => prev + 0.1), 100)
+        return () => clearTimeout(t)
+    }, [isPlaying, timer])
+
     function clickTarget(idx: number) {
         if (!isPlaying || idx !== 0 || exiting) return
         setExiting(true)
     }
-    
+
     function handleFadeEnd(e: React.TransitionEvent<HTMLDivElement>) {
         if (e.propertyName !== 'opacity') return
         setTargetsRange(prev => [prev[0] + 1, Math.min(prev[1] + 1, course.length)])
@@ -73,53 +68,57 @@ export default function GameBoard() {
         setCountdown(INITIAL_COUNTDOWN)
         setIsPlaying(false)
         setTargetsRange([0, NUM_TARGETS_TO_SHOW])
+        setTimer(0)
     }
+
+    const minutes = Math.floor(timer / 60)
+    const seconds = Math.floor(timer % 60)
+    const tenths = Math.round((timer % 1) * 10)
+    const timerText = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}.${tenths}`
 
     return (
         <div className={styles.page}>
-            <div>
+            <div className={styles.topButtonsWrapper}>
+                <div className={styles.timerText}>{timerText}</div>
                 <button onClick={restartGame}>Restart</button>
             </div>
             <div className={styles.board}>
-            {!isPlaying && <div className={styles.countdownOverlay}>{countdown}</div>}
-                {
-                targets.map((targ, idx) => {
-                    return (
-                        <div 
-                            key={`${targ.left}-${targ.top}`}
-                            className={`${styles.target} ${styles[`step${idx}`]} ${exiting && idx === 0 ? styles.exiting : ''}`}
-                            style={{ left: targ.left + '%', top: targ.top + '%'}}
-                            onMouseDown={() => clickTarget(idx)}
-                            onTransitionEnd={exiting && idx === 0 ? handleFadeEnd : undefined}
-                            >
-                        </div>
-                    )
-                })
-                }
+                {!isPlaying && (
+                    <div className={styles.countdownOverlay}>
+                        {countdown}
+                    </div>
+                )}
+                {targets.map((targ, idx) => (
+                    <div
+                        key={`${targ.left}-${targ.top}`}
+                        className={`${styles.target} ${styles[`step${idx}`]} ${exiting && idx === 0 ? styles.exiting : ''}`}
+                        style={{ left: targ.left + '%', top: targ.top + '%' }}
+                        onMouseDown={() => clickTarget(idx)}
+                        onTransitionEnd={exiting && idx === 0 ? handleFadeEnd : undefined}
+                    />
+                ))}
                 <svg
                     className={styles.targetConnectors}
                     width="100%"
                     height="100%"
                 >
-                    {
-                        targets.map((targ, idx) => {
-                            const next = targets[idx + 1]
-                            if (!next) return null
-                            return (
-                                <line
-                                    key={`${targ.left}-${targ.top}-${next.left}-${next.top}`}
-                                    className={`${styles.connector} ${exiting && idx === 0 ? styles.connectorExit : ''}`}
-                                    x1={targ.left + '%'}
-                                    y1={targ.top + '%'}
-                                    x2={next.left + '%'}
-                                    y2={next.top + '%'}
-                                    stroke="rgba(255, 255, 255, 0.25)"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                />
-                            )
-                        })
-                    }
+                    {targets.map((targ, idx) => {
+                        const next = targets[idx + 1]
+                        if (!next) return null
+                        return (
+                            <line
+                                key={`${targ.left}-${targ.top}-${next.left}-${next.top}`}
+                                className={`${styles.connector} ${exiting && idx === 0 ? styles.connectorExit : ''}`}
+                                x1={targ.left + '%'}
+                                y1={targ.top + '%'}
+                                x2={next.left + '%'}
+                                y2={next.top + '%'}
+                                stroke="rgba(255, 255, 255, 0.25)"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                            />
+                        )
+                    })}
                 </svg>
             </div>
         </div>
