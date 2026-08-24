@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import styles from './Gameboard.module.css'
 import type { Target } from '../types'
+import LeaderboardModal from "./LeaderboardModal"
 
 export default function GameBoard() {
     const NUM_TARGETS_TO_SHOW = 5
@@ -39,6 +40,9 @@ export default function GameBoard() {
     const targets = course.slice(firstTargIdx, lastTargIdx)
     const [exiting, setExiting] = useState(false)
 
+    // Modal state
+    const [showLeaderboard, setShowLeaderboard] = useState(false)
+
     useEffect(() => {
         if (countdown === null || countdown <= 0) {
             if (countdown === 0) setIsPlaying(true)
@@ -67,10 +71,11 @@ export default function GameBoard() {
         console.log(nextTargToClick, lastTargInRange)
 
         // Restart game if won
-        const gameWon = nextTargToClick >= lastTargInRange
-        if (gameWon) {
+        const gameFinished = nextTargToClick >= lastTargInRange
+        if (gameFinished) {
             setIsPlaying(false)
             setCountdown(null)
+            setShowLeaderboard(true)
         }
         setTargetsRange([nextTargToClick, lastTargInRange])
         setExiting(false)
@@ -86,6 +91,8 @@ export default function GameBoard() {
         setTargetsRange([0, NUM_TARGETS_TO_SHOW])
         setTimer(0) // Setting timer to non NULL value will start iniating the countdown to play
         setCountdown(INITIAL_COUNTDOWN)
+        setIsPlaying(false)
+        setShowLeaderboard(false)
     }
 
     const minutes = Math.floor(timer / 60)
@@ -95,6 +102,7 @@ export default function GameBoard() {
 
     return (
         <div className={styles.page}>
+            {showLeaderboard && <LeaderboardModal />}
             <div className={styles.topButtonsWrapper}>
                 <div className={styles.timerText}>{timerText}</div>
                 <button onClick={playGame}>Restart</button>
