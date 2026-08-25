@@ -1,5 +1,5 @@
 import { createPortal } from "react-dom"
-import { X, RotateCw } from "lucide-react"
+import { X, RotateCw, Star } from "lucide-react"
 import type { Course, Score } from "../types"
 import styles from './LeaderboardModal.module.css'
 
@@ -32,8 +32,15 @@ export default function LeaderboardModal({course, recentScore, onRestart, onClos
                         scores?.slice(0, NUM_SCORES_TO_DISPLAY).map((data, idx) => {
                         const {date, time} = data
                         return (
-                            <li className={styles.leaderboardRow}>
-                                <span style={{width: "10%"}}>{idx + 1}.</span>
+                            <li className={`${styles.leaderboardRow} ${styles["top" + (idx + 1)]}`}>
+                                {
+                                    idx < 3 ?
+                                    <div className={styles.rankCell}>
+                                        <Star className={styles["star" + (idx + 1)]} fill="currentColor" strokeWidth={1.5} />
+                                    </div>
+                                    :
+                                    <span style={{width: "10%"}}>{idx + 1}.</span>
+                                }
                                 <span style={{width: "40%"}}>{date}</span>
                                 <span style={{width: "40%"}} className={styles.rowTime}>{time}</span>
                             </li>
