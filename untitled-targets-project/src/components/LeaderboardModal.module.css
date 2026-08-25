@@ -90,3 +90,33 @@
     width: 2.25rem;
     height: 2.25rem;
 }
+
+.recentScore {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1.5rem;
+    background: rgba(0, 210, 255, 0.04);
+    border: 1px solid rgba(0, 210, 255, 0.25);
+    border-radius: 8px;
+    box-shadow: 0 0 12px rgba(0, 210, 255, 0.08);
+}
+
+.recentScoreLabel {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    color: #8ca8c5;
+    text-transform: uppercase;
+}
+
+.recentScoreValue {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #00d2ff;
+    text-shadow: 0 0 10px rgba(0, 210, 255, 0.3);
+    letter-spacing: 0.05em;
+}

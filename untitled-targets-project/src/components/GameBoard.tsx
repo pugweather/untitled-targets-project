@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import type { Score } from "../types"
 import styles from './Gameboard.module.css'
 import LeaderboardModal from "./LeaderboardModal"
 
@@ -89,15 +90,17 @@ export default function GameBoard() {
 
             // Store score in local storage
             const key = "course-" + courseId
-            const scores = JSON.parse(localStorage.getItem(key) || '[]')
-
+            
             const now = new Date()
             const date = `${now.getMonth() + 1}/${now.getDate()}/${now.getFullYear()}`
+
+            const scores = JSON.parse(localStorage.getItem(key) || '[]')
             scores.push({
                 date,
                 time: timerText,
                 rawTime: timer
             })
+            scores.sort((a,b) => a.rawTime - b.rawTime) as Score[]
             localStorage.setItem(key, JSON.stringify(scores))
 
             setIsPlaying(false)
@@ -124,7 +127,7 @@ export default function GameBoard() {
 
     return (
         <div className={styles.page}>
-            {showLeaderboard && <LeaderboardModal course={course} onRestart={playGame} onClose={() => setShowLeaderboard(false)}/>}
+            {showLeaderboard && <LeaderboardModal recentScore={timerText} course={course} onRestart={playGame} onClose={() => setShowLeaderboard(false)}/>}
             <div className={styles.topButtonsWrapper}>
                 <div className={styles.timerText}>{timerText}</div>
                 <button onClick={playGame}>Restart</button>

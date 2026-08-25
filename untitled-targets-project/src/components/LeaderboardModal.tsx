@@ -5,27 +5,31 @@ import styles from './LeaderboardModal.module.css'
 
 type LeaderboardModalProps = {
     course: Course,
+    recentScore: string,
     onClose: () => void,
     onRestart: () => void
 }
 
-export default function LeaderboardModal({course, onRestart, onClose}: LeaderboardModalProps) {
+export default function LeaderboardModal({course, recentScore, onRestart, onClose}: LeaderboardModalProps) {
     const node = document.getElementById("modal")
     if (!node) return null
 
-    const {courseId, title} = course
+    const NUM_SCORES_TO_DISPLAY = 5
 
+    const {courseId, title} = course
     const scores = JSON.parse(localStorage.getItem("course-" + courseId) || "[]")
-        .sort((a,b) => a.rawTime - b.rawTime) as Score[]
 
     return createPortal(
         <div className={styles.modalOverlay}>
             <div className={styles.innerModalContainer}>
                 <h2 className={styles.modalTitle}>{title}</h2>
-
+                <div className={styles.recentScore}>
+                    <span className={styles.recentScoreLabel}>YOUR SCORE</span>
+                    <span className={styles.recentScoreValue}>{recentScore}</span>
+                </div>
                 <ul className={styles.leaderboardList}>
                     {
-                        scores?.map((data, idx) => {
+                        scores?.slice(0, NUM_SCORES_TO_DISPLAY).map((data, idx) => {
                         const {date, time} = data
                         return (
                             <li className={styles.leaderboardRow}>
