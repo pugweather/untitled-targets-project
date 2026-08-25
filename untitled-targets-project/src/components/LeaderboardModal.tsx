@@ -1,14 +1,7 @@
 import { createPortal } from "react-dom"
 import { X, RotateCw } from "lucide-react"
+import type { Course, Score } from "../types"
 import styles from './LeaderboardModal.module.css'
-import type { Target } from '../types'
-
-type Course = {
-    courseId: number,
-    title: string,
-    targets: Target[]
-
-}
 
 type LeaderboardModalProps = {
     course: Course,
@@ -22,8 +15,7 @@ export default function LeaderboardModal({course, onRestart, onClose}: Leaderboa
 
     const {courseId, title} = course
 
-    const scores = JSON.parse(localStorage.getItem("course-" + courseId) || "[]")
-    console.log(scores)
+    const scores = JSON.parse(localStorage.getItem("course-" + courseId) || "[]") as Score[]
 
     return createPortal(
         <div className={styles.modalOverlay}>

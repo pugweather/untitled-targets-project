@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react"
 import styles from './Gameboard.module.css'
-import type { Target } from '../types'
 import LeaderboardModal from "./LeaderboardModal"
 
 export default function GameBoard() {
