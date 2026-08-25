@@ -17,7 +17,7 @@ export default function LeaderboardModal({course, recentScore, onRestart, onClos
     const NUM_SCORES_TO_DISPLAY = 5
 
     const {courseId, title} = course
-    const scores = JSON.parse(localStorage.getItem("course-" + courseId) || "[]")
+    const scores = JSON.parse(localStorage.getItem("course-" + courseId) || "[]") as Score[]
 
     return createPortal(
         <div className={styles.modalOverlay}>

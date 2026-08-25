@@ -94,13 +94,13 @@ export default function GameBoard() {
             const now = new Date()
             const date = `${now.getMonth() + 1}/${now.getDate()}/${now.getFullYear()}`
 
-            const scores = JSON.parse(localStorage.getItem(key) || '[]')
+            const scores = JSON.parse(localStorage.getItem(key) || '[]') as Score[]
             scores.push({
                 date,
                 time: timerText,
                 rawTime: timer
             })
-            scores.sort((a,b) => a.rawTime - b.rawTime) as Score[]
+            scores.sort((a,b) => a.rawTime - b.rawTime)
             localStorage.setItem(key, JSON.stringify(scores))
 
             setIsPlaying(false)
