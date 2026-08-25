@@ -33,19 +33,21 @@ export default function GameBoard() {
         ],
     }
 
-    const {courseId, title, targets} = course
+    const {courseId, targets} = course
 
+    // Game settings
     const [countdown, setCountdown] = useState<number | null>(INITIAL_COUNTDOWN)
     const [isPlaying, setIsPlaying] = useState(false)
     const [timer, setTimer] = useState<number>(0)
 
+    // Target visibility
     const [targetsRange, setTargetsRange] = useState([0, NUM_TARGETS_TO_SHOW])
     const [firstTargIdx, lastTargIdx] = targetsRange
-
     const visibleTargets = targets.slice(firstTargIdx, lastTargIdx)
+    // Animates away targets as they are clicked
     const [exiting, setExiting] = useState(false)
 
-    // Current timer time
+    // Current timer
     const minutes = Math.floor(timer / 60)
     const seconds = Math.floor(timer % 60)
     const tenths = Math.round((timer % 1) * 10)
@@ -75,11 +77,11 @@ export default function GameBoard() {
     }
 
     function handleFadeEnd(e: React.TransitionEvent<HTMLDivElement>) {
+
         if (e.propertyName !== 'opacity') return
 
         const nextTargToClick = targetsRange[0] + 1
         const lastTargInRange = Math.min(targetsRange[1] + 1, targets.length)
-        console.log(nextTargToClick, lastTargInRange)
 
         // Restart game if won
         const gameFinished = nextTargToClick >= lastTargInRange
@@ -96,7 +98,6 @@ export default function GameBoard() {
                 time: timerText,
                 rawTime: timer
             })
-            console.log(date, timerText)
             localStorage.setItem(key, JSON.stringify(scores))
 
             setIsPlaying(false)
