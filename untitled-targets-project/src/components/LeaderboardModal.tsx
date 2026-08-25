@@ -41,6 +41,7 @@ export default function LeaderboardModal({course, recentScore, onRestart, onClos
                         })
                     }
                 </ul>
+                
 
                 <div className={styles.buttonsRow}>
                     <button className={styles.actionButton} onClick={onClose}>
