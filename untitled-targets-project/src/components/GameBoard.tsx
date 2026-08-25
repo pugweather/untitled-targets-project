@@ -7,28 +7,34 @@ export default function GameBoard() {
     const NUM_TARGETS_TO_SHOW = 5
     const INITIAL_COUNTDOWN = 3
 
-    const course: Target[] = [
-        { left: 15, top: 35 },
-        { left: 19, top: 65 },
-        // { left: 23, top: 35 },
-        // { left: 27, top: 65 },
-        // { left: 31, top: 35 },
-        // { left: 35, top: 65 },
-        // { left: 39, top: 35 },
-        // { left: 43, top: 65 },
-        // { left: 47, top: 35 },
-        // { left: 51, top: 65 },
-        // { left: 55, top: 35 },
-        // { left: 59, top: 65 },
-        // { left: 63, top: 35 },
-        // { left: 67, top: 65 },
-        // { left: 71, top: 35 },
-        // { left: 75, top: 65 },
-        // { left: 79, top: 35 },
-        // { left: 83, top: 65 },
-        // { left: 87, top: 35 },
-        // { left: 91, top: 65 },
-    ]
+    const course = {
+        courseId: 1,
+        title: "Test Course",
+        targets: [
+            { left: 15, top: 35 },
+            { left: 19, top: 65 },
+            { left: 23, top: 35 },
+            { left: 27, top: 65 },
+            { left: 31, top: 35 },
+            { left: 35, top: 65 },
+            { left: 39, top: 35 },
+            { left: 43, top: 65 },
+            { left: 47, top: 35 },
+            { left: 51, top: 65 },
+            // { left: 55, top: 35 },
+            // { left: 59, top: 65 },
+            // { left: 63, top: 35 },
+            // { left: 67, top: 65 },
+            // { left: 71, top: 35 },
+            // { left: 75, top: 65 },
+            // { left: 79, top: 35 },
+            // { left: 83, top: 65 },
+            // { left: 87, top: 35 },
+            // { left: 91, top: 65 },
+        ],
+    }
+
+    const {courseId, title, targets} = course
 
     const [countdown, setCountdown] = useState<number | null>(INITIAL_COUNTDOWN)
     const [isPlaying, setIsPlaying] = useState(false)
@@ -37,8 +43,14 @@ export default function GameBoard() {
     const [targetsRange, setTargetsRange] = useState([0, NUM_TARGETS_TO_SHOW])
     const [firstTargIdx, lastTargIdx] = targetsRange
 
-    const targets = course.slice(firstTargIdx, lastTargIdx)
+    const visibleTargets = targets.slice(firstTargIdx, lastTargIdx)
     const [exiting, setExiting] = useState(false)
+
+    // Current timer time
+    const minutes = Math.floor(timer / 60)
+    const seconds = Math.floor(timer % 60)
+    const tenths = Math.round((timer % 1) * 10)
+    const timerText = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}.${tenths}`
 
     // Modal state
     const [showLeaderboard, setShowLeaderboard] = useState(false)
@@ -67,12 +79,26 @@ export default function GameBoard() {
         if (e.propertyName !== 'opacity') return
 
         const nextTargToClick = targetsRange[0] + 1
-        const lastTargInRange = Math.min(targetsRange[1] + 1, course.length)
+        const lastTargInRange = Math.min(targetsRange[1] + 1, targets.length)
         console.log(nextTargToClick, lastTargInRange)
 
         // Restart game if won
         const gameFinished = nextTargToClick >= lastTargInRange
         if (gameFinished) {
+
+            // Store score in local storage
+            const key = "course-" + courseId
+            const scores = JSON.parse(localStorage.getItem(key) || '[]')
+
+            const now = new Date()
+            const date = `${now.getMonth() + 1}/${now.getDate()}/${now.getFullYear()}`
+            scores.push({
+                date,
+                time: timerText
+            })
+            console.log(date, timerText)
+            localStorage.setItem(key, JSON.stringify(scores))
+
             setIsPlaying(false)
             setCountdown(null)
             setShowLeaderboard(true)
@@ -95,14 +121,9 @@ export default function GameBoard() {
         setShowLeaderboard(false)
     }
 
-    const minutes = Math.floor(timer / 60)
-    const seconds = Math.floor(timer % 60)
-    const tenths = Math.round((timer % 1) * 10)
-    const timerText = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}.${tenths}`
-
     return (
         <div className={styles.page}>
-            {showLeaderboard && <LeaderboardModal onRestart={playGame} onClose={() => setShowLeaderboard(false)}/>}
+            {showLeaderboard && <LeaderboardModal course={course} onRestart={playGame} onClose={() => setShowLeaderboard(false)}/>}
             <div className={styles.topButtonsWrapper}>
                 <div className={styles.timerText}>{timerText}</div>
                 <button onClick={playGame}>Restart</button>
@@ -113,7 +134,7 @@ export default function GameBoard() {
                         {countdown}
                     </div>
                 )}
-                {targets.map((targ, idx) => (
+                {visibleTargets.map((targ, idx) => (
                     <div
                         key={`${targ.left}-${targ.top}`}
                         className={`${styles.target} ${styles[`step${idx}`]} ${exiting && idx === 0 ? styles.exiting : ''}`}
@@ -127,8 +148,8 @@ export default function GameBoard() {
                     width="100%"
                     height="100%"
                 >
-                    {targets.map((targ, idx) => {
-                        const next = targets[idx + 1]
+                    {visibleTargets.map((targ, idx) => {
+                        const next = visibleTargets[idx + 1]
                         if (!next) return null
                         return (
                             <line
