@@ -11,5 +11,6 @@ export type Course = {
 
 export type Score = {
     date: string,
-    time: string
+    time: string,
+    rawTime: number
 }

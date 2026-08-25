@@ -15,7 +15,8 @@ export default function LeaderboardModal({course, onRestart, onClose}: Leaderboa
 
     const {courseId, title} = course
 
-    const scores = JSON.parse(localStorage.getItem("course-" + courseId) || "[]") as Score[]
+    const scores = JSON.parse(localStorage.getItem("course-" + courseId) || "[]")
+        .sort((a,b) => a.rawTime - b.rawTime) as Score[]
 
     return createPortal(
         <div className={styles.modalOverlay}>
@@ -24,12 +25,13 @@ export default function LeaderboardModal({course, onRestart, onClose}: Leaderboa
 
                 <ul className={styles.leaderboardList}>
                     {
-                        scores?.map(data => {
+                        scores?.map((data, idx) => {
                         const {date, time} = data
                         return (
                             <li className={styles.leaderboardRow}>
-                                <span>{date}</span>
-                                <span className={styles.rowTime}>{time}</span>
+                                <span style={{width: "10%"}}>{idx + 1}.</span>
+                                <span style={{width: "40%"}}>{date}</span>
+                                <span style={{width: "40%"}} className={styles.rowTime}>{time}</span>
                             </li>
                         )
                         })

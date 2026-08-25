@@ -49,7 +49,7 @@ export default function GameBoard() {
     const minutes = Math.floor(timer / 60)
     const seconds = Math.floor(timer % 60)
     const tenths = Math.round((timer % 1) * 10)
-    const timerText = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}.${tenths}`
+    const timerText = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}.${String(tenths).padEnd(2, '0')}`
 
     // Modal state
     const [showLeaderboard, setShowLeaderboard] = useState(false)
@@ -93,7 +93,8 @@ export default function GameBoard() {
             const date = `${now.getMonth() + 1}/${now.getDate()}/${now.getFullYear()}`
             scores.push({
                 date,
-                time: timerText
+                time: timerText,
+                rawTime: timer
             })
             console.log(date, timerText)
             localStorage.setItem(key, JSON.stringify(scores))
