@@ -102,7 +102,7 @@ export default function GameBoard() {
 
     return (
         <div className={styles.page}>
-            {showLeaderboard && <LeaderboardModal />}
+            {showLeaderboard && <LeaderboardModal onRestart={playGame} onClose={() => setShowLeaderboard(false)}/>}
             <div className={styles.topButtonsWrapper}>
                 <div className={styles.timerText}>{timerText}</div>
                 <button onClick={playGame}>Restart</button>
