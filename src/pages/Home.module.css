@@ -48,15 +48,94 @@
   border-radius: 9px;
   color: color-mix(in srgb, red, blue var(--mix, 0%));
   background: color-mix(in srgb, red, blue var(--mix, 0%));
-  box-shadow: 0 0 16px 4px currentColor;
+  opacity: 0.6;
+  box-shadow: 0 0 14px 3px currentColor;
   z-index: 0;
   transition:
-  opacity 0.12s ease-out,
-  transform 0.12s ease-out,
-  filter 0.12s ease-out;
+    opacity 0.12s ease-out,
+    transform 0.12s ease-out,
+    filter 0.12s ease-out;
 }
 
 .heroWrapper {
-  position: relative;
-  z-index: 100;
+    position: relative;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3.5rem;
+    text-align: center;
+}
+
+.heroWrapper h1 {
+    margin: 0;
+    font-size: clamp(3rem, 10vw, 8rem);
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #fff;
+    text-shadow:
+        0 0 10px rgba(255, 255, 255, 0.4),
+        0 0 40px rgba(5, 217, 232, 0.35),
+        0 0 80px rgba(5, 217, 232, 0.2);
+    animation: titlePulse 3s ease-in-out infinite;
+}
+
+@keyframes titlePulse {
+    0%, 100% {
+        text-shadow:
+            0 0 10px rgba(255, 255, 255, 0.4),
+            0 0 40px rgba(5, 217, 232, 0.35),
+            0 0 80px rgba(5, 217, 232, 0.2);
+    }
+    50% {
+        text-shadow:
+            0 0 14px rgba(255, 255, 255, 0.6),
+            0 0 60px rgba(5, 217, 232, 0.5),
+            0 0 120px rgba(5, 217, 232, 0.35);
+    }
+}
+
+.heroWrapper ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: min(20rem, 80vw);
+}
+
+.modeItem {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(5, 217, 232, 0.3);
+    border-radius: 8px;
+    cursor: pointer;
+    transition:
+        color 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.1s ease;
+}
+
+.modeItem:hover {
+    color: #fff;
+    background: rgba(5, 217, 232, 0.08);
+    border-color: rgba(5, 217, 232, 0.8);
+    box-shadow:
+        0 0 20px 4px rgba(5, 217, 232, 0.2),
+        inset 0 0 12px rgba(5, 217, 232, 0.05);
+    transform: translateY(-2px);
+}
+
+.modeItem:active {
+    transform: translateY(0);
 }

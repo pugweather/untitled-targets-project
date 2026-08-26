@@ -35,7 +35,7 @@ export default function Home() {
                 top: Math.random() * 100,
                 color: COLORS[Math.floor(Math.random() * COLORS.length)]
             }
-            setTargets(prev => [...prev, newTarget].slice(-30))
+            setTargets(prev => [...prev, newTarget].slice(-20))
         }
 
         const spawnIntervalId = setInterval(spawn, 1250)

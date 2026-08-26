@@ -1,4 +1,5 @@
 import { createPortal } from "react-dom"
+import { useNavigate } from "react-router"
 import { X, RotateCw, Star, Home } from "lucide-react"
 import type { Course, Score } from "../types"
 import styles from './LeaderboardModal.module.css'
@@ -18,6 +19,8 @@ export default function LeaderboardModal({course, recentScore, onRestart, onClos
 
     const {courseId, title} = course
     const scores = JSON.parse(localStorage.getItem("course-" + courseId) || "[]") as Score[]
+
+    const navigate = useNavigate()
 
     return createPortal(
         <div className={styles.modalOverlay}>
@@ -53,7 +56,7 @@ export default function LeaderboardModal({course, recentScore, onRestart, onClos
                     <button className={styles.actionButton} onClick={onClose}>
                         <X className={styles.actionIcon} strokeWidth={2.5} />
                     </button>
-                    <button className={styles.actionButton} onClick={() => console.log("home")}>
+                    <button className={styles.actionButton} onClick={() => navigate("/")}>
                         <Home className={styles.actionIcon} strokeWidth={2.5} />
                     </button>
                     <button className={styles.actionButton} onClick={onRestart}>
