@@ -57,6 +57,19 @@
     filter 0.12s ease-out;
 }
 
+.grow {
+  animation: grow 3s ease-out;
+}
+
+@keyframes grow {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.25);
+  }
+}
+
 .heroWrapper {
     position: relative;
     z-index: 999;

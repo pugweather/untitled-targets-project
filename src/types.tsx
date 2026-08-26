@@ -8,6 +8,7 @@ export type HomeTarget = {
     left: number,
     top: number
     color: string,
+    state: string
 }
 
 export type Course = {
