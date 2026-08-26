@@ -1,5 +1,5 @@
 import { createPortal } from "react-dom"
-import { X, RotateCw, Star } from "lucide-react"
+import { X, RotateCw, Star, Home } from "lucide-react"
 import type { Course, Score } from "../types"
 import styles from './LeaderboardModal.module.css'
 
@@ -52,6 +52,9 @@ export default function LeaderboardModal({course, recentScore, onRestart, onClos
                 <div className={styles.buttonsRow}>
                     <button className={styles.actionButton} onClick={onClose}>
                         <X className={styles.actionIcon} strokeWidth={2.5} />
+                    </button>
+                    <button className={styles.actionButton} onClick={() => console.log("home")}>
+                        <Home className={styles.actionIcon} strokeWidth={2.5} />
                     </button>
                     <button className={styles.actionButton} onClick={onRestart}>
                         <RotateCw className={styles.actionIcon} strokeWidth={2.5} />

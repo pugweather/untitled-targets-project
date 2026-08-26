@@ -1,8 +1,15 @@
-import GameBoard from './components/GameBoard'
+import Home from "./pages/Home.tsx"
+import GameBoard from "./pages/GameBoard.tsx"
+import { BrowserRouter, Route, Routes } from "react-router-dom"
 
 function App() {
   return (
-    <GameBoard />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/game" element={<GameBoard />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 

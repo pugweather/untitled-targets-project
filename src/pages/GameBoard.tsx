@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import type { Score } from "../types"
 import styles from './Gameboard.module.css'
-import LeaderboardModal from "./LeaderboardModal"
+import LeaderboardModal from "../components/LeaderboardModal"
 
 export default function GameBoard() {
     const NUM_TARGETS_TO_SHOW = 5
@@ -13,14 +13,14 @@ export default function GameBoard() {
         targets: [
             { left: 15, top: 35 },
             { left: 19, top: 65 },
-            { left: 23, top: 35 },
-            { left: 27, top: 65 },
-            { left: 31, top: 35 },
-            { left: 35, top: 65 },
-            { left: 39, top: 35 },
-            { left: 43, top: 65 },
-            { left: 47, top: 35 },
-            { left: 51, top: 65 },
+            // { left: 23, top: 35 },
+            // { left: 27, top: 65 },
+            // { left: 31, top: 35 },
+            // { left: 35, top: 65 },
+            // { left: 39, top: 35 },
+            // { left: 43, top: 65 },
+            // { left: 47, top: 35 },
+            // { left: 51, top: 65 },
             // { left: 55, top: 35 },
             // { left: 59, top: 65 },
             // { left: 63, top: 35 },

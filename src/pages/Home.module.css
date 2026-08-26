@@ -1,0 +1,62 @@
+.page {
+    position: relative;
+    min-height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    background-color: #07070a;
+    font-family: 'Courier New', Courier, ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(5, 217, 232, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(5, 217, 232, 0.04) 1px, transparent 1px);
+  background-size: 64px 64px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.page::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0) 0px,
+    rgba(0, 0, 0, 0) 2px,
+    rgba(0, 0, 0, 0.2) 3px,
+    rgba(0, 0, 0, 0.2) 4px
+  );
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0.5;
+}
+
+.target {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 9px;
+  color: color-mix(in srgb, red, blue var(--mix, 0%));
+  background: color-mix(in srgb, red, blue var(--mix, 0%));
+  box-shadow: 0 0 16px 4px currentColor;
+  z-index: 0;
+  transition:
+  opacity 0.12s ease-out,
+  transform 0.12s ease-out,
+  filter 0.12s ease-out;
+}
+
+.heroWrapper {
+  position: relative;
+  z-index: 100;
+}

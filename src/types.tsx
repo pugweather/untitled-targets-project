@@ -3,6 +3,13 @@ export type Target = {
     top: number
 }
 
+export type HomeTarget = {
+    id: number,
+    left: number,
+    top: number
+    color: string,
+}
+
 export type Course = {
     courseId: number,
     title: string,
