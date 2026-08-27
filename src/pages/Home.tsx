@@ -94,9 +94,9 @@ export default function Home() {
 
     useEffect(() => {
 
-        let animationFrameId
-
         function spawn() {
+
+            if (document.hidden) return
 
             const speed = 0.5
             const angle = Math.random() * Math.PI * 2
@@ -121,7 +121,7 @@ export default function Home() {
     }, [])
 
     useEffect(() => {
-        let animationFrameId
+        let animationFrameId: number
         function move() {
             setTargets(prev => 
                 prev.map(t => {
