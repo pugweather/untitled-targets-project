@@ -7,8 +7,17 @@ export type HomeTarget = {
     id: number,
     left: number,
     top: number
+    vx: number,
+    vy: number,
     color: string,
     state: string
+}
+
+export type Fragment = {
+    id: number,
+    left: number,
+    top: number,
+    color: string
 }
 
 export type Course = {
