@@ -1,6 +1,7 @@
 import styles from "./Home.module.css"
 import { useState, useEffect, useRef } from "react"
 import { useNavigate } from "react-router"
+import { Volume2 } from "lucide-react"
 import type { HomeTarget, Fragment } from "../types"
 import anime from "animejs"
 
@@ -200,6 +201,9 @@ export default function Home() {
                     <ExplosionFragment key={f.id} fragment={f} onRemove={removeFragment} />
                 ))
             }
+            <button className={styles.audioButton} disabled aria-label="Audio (coming soon)">
+                <Volume2 className={styles.audioIcon} strokeWidth={2} />
+            </button>
         </div>
     )
 }

@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react"
+import { useNavigate } from "react-router"
+import { RotateCw, Home } from "lucide-react"
 import type { Score } from "../types"
 import styles from './Gameboard.module.css'
 import LeaderboardModal from "../components/LeaderboardModal"
@@ -35,6 +37,8 @@ export default function GameBoard() {
     }
 
     const {courseId, targets} = course
+
+    const navigate = useNavigate()
 
     // Game settings
     const [countdown, setCountdown] = useState<number | null>(INITIAL_COUNTDOWN)
@@ -130,7 +134,12 @@ export default function GameBoard() {
             {showLeaderboard && <LeaderboardModal recentScore={timerText} course={course} onRestart={playGame} onClose={() => setShowLeaderboard(false)}/>}
             <div className={styles.topButtonsWrapper}>
                 <div className={styles.timerText}>{timerText}</div>
-                <button onClick={playGame}>Restart</button>
+                <button className={styles.actionButton} onClick={playGame} aria-label="Restart">
+                    <RotateCw className={styles.actionIcon} strokeWidth={2.5} />
+                </button>
+                <button className={`${styles.actionButton} ${styles.homeButton}`} onClick={() => navigate("/")} aria-label="Home">
+                    <Home className={styles.actionIcon} strokeWidth={2.5} />
+                </button>
             </div>
             <div className={styles.board}>
                 {!isPlaying && (

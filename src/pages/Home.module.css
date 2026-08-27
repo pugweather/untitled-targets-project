@@ -185,3 +185,34 @@
     z-index: 0;
     pointer-events: none;
 }
+
+.audioButton {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 3.25rem;
+    height: 3.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid #2a3a52;
+    border-radius: 50%;
+    color: #00d2ff;
+    opacity: 0.6;
+    cursor: not-allowed;
+    z-index: 1000;
+    transition:
+        color 0.12s,
+        border-color 0.12s,
+        box-shadow 0.12s;
+}
+
+.audioButton:disabled {
+    pointer-events: none;
+}
+
+.audioIcon {
+    width: 1.5rem;
+    height: 1.5rem;
+}

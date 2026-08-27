@@ -113,12 +113,14 @@
 }
 
 .topButtonsWrapper {
-    width: 100%;
+    position: relative;
+    width: min(1200px, 92vw);
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 1.5rem;
     margin: 1rem 0;
+    padding: 0 0.5rem;
 
     .timerText {
       width: 7.5rem;
@@ -130,13 +132,38 @@
       font-variant-numeric: tabular-nums;
     }
 
-    button {
-      padding: 0.5rem 1rem;
-      font-size: 1rem;
-      border-radius: 6px;
+    .actionButton {
+      width: 3.25rem;
+      height: 3.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
       border: 1px solid #2a3a52;
-      background: #161a22;
-      color: white;
+      border-radius: 50%;
+      color: #00d2ff;
       cursor: pointer;
+      transition:
+          color 0.12s,
+          border-color 0.12s,
+          box-shadow 0.12s;
+    }
+
+    .actionButton:hover {
+      color: #ffffff;
+      border-color: #00d2ff;
+      box-shadow: 0 0 20px 6px rgba(0, 210, 255, 0.25);
+    }
+
+    .homeButton {
+      position: absolute;
+      right: 0.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .actionIcon {
+      width: 1.5rem;
+      height: 1.5rem;
     }
 }
