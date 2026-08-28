@@ -69,7 +69,7 @@ export default function SelectCourse() {
                     })}
                 </div>
                 <div className={styles.bottomBar}>
-                    <button className={styles.navButton} onClick={() => navigate(-1)} aria-label="Back">
+                    <button className={styles.navButton} onClick={() => navigate(-1)}>
                         <ArrowLeft size={28} />
                     </button>
                 </div>

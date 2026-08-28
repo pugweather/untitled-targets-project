@@ -115,14 +115,14 @@ export default function GameBoard() {
         <div className={styles.page}>
             {showLeaderboard && <LeaderboardModal recentScore={timerText} course={course} onRestart={playGame} onClose={() => setShowLeaderboard(false)}/>}
             <div className={styles.topButtonsWrapper}>
-                <button className={`${styles.actionButton} ${styles.backButton}`} onClick={() => navigate(-1)} aria-label="Back">
+                <button className={`${styles.actionButton} ${styles.backButton}`} onClick={() => navigate(-1)}>
                     <ArrowLeft className={styles.actionIcon} strokeWidth={2.5} />
                 </button>
                 <div className={styles.timerText}>{timerText}</div>
-                <button className={styles.actionButton} onClick={playGame} aria-label="Restart">
+                <button className={styles.actionButton} onClick={playGame}>
                     <RotateCw className={styles.actionIcon} strokeWidth={2.5} />
                 </button>
-                <button className={`${styles.actionButton} ${styles.homeButton}`} onClick={() => navigate("/")} aria-label="Home">
+                <button className={`${styles.actionButton} ${styles.homeButton}`} onClick={() => navigate("/")}>
                     <Home className={styles.actionIcon} strokeWidth={2.5} />
                 </button>
             </div>

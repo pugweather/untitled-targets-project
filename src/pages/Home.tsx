@@ -203,7 +203,7 @@ export default function Home() {
                     <ExplosionFragment key={f.id} fragment={f} onRemove={removeFragment} />
                 ))
             }
-            <button className={styles.audioButton} disabled aria-label="Audio (coming soon)">
+            <button className={styles.audioButton} disabled>
                 <Volume2 className={styles.audioIcon} strokeWidth={2} />
             </button>
         </div>
