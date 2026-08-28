@@ -68,7 +68,7 @@ export default function Home() {
         {
             id: "1",
             name: "Frenzy",
-            path: "/game"
+            path: "/select-course"
         },
         {
             id: "2",

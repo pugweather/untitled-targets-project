@@ -4,37 +4,13 @@ import { RotateCw, Home } from "lucide-react"
 import type { Score } from "../types"
 import styles from './Gameboard.module.css'
 import LeaderboardModal from "../components/LeaderboardModal"
+import { COURSES } from "../data/courses"
 
 export default function GameBoard() {
     const NUM_TARGETS_TO_SHOW = 5
     const INITIAL_COUNTDOWN = 3
 
-    const course = {
-        courseId: 1,
-        title: "Test Course",
-        targets: [
-            { left: 15, top: 35 },
-            { left: 19, top: 65 },
-            // { left: 23, top: 35 },
-            // { left: 27, top: 65 },
-            // { left: 31, top: 35 },
-            // { left: 35, top: 65 },
-            // { left: 39, top: 35 },
-            // { left: 43, top: 65 },
-            // { left: 47, top: 35 },
-            // { left: 51, top: 65 },
-            // { left: 55, top: 35 },
-            // { left: 59, top: 65 },
-            // { left: 63, top: 35 },
-            // { left: 67, top: 65 },
-            // { left: 71, top: 35 },
-            // { left: 75, top: 65 },
-            // { left: 79, top: 35 },
-            // { left: 83, top: 65 },
-            // { left: 87, top: 35 },
-            // { left: 91, top: 65 },
-        ],
-    }
+    const course = COURSES[0]
 
     const {courseId, targets} = course
 

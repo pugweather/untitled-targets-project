@@ -23,6 +23,8 @@ export type Fragment = {
 export type Course = {
     courseId: number,
     title: string,
+    difficulty: number,
+    image: string,
     targets: Target[]
 }
 
