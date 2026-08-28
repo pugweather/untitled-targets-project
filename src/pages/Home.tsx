@@ -73,12 +73,14 @@ export default function Home() {
         {
             id: "2",
             name: "MusicMania",
-            path: ""
+            path: "",
+            isDisabled: true,
         },
         {
             id: "3",
             name: "Editor",
-            path: ""
+            path: "",
+            isDisabled: true
         }
     ]
 
@@ -155,7 +157,7 @@ export default function Home() {
                         MENU_OPTIONS.map(opt => {
                             return (
                                 <li key={opt.id} onClick={() => navigate(opt.path)}>
-                                    <button className={styles.modeItem}>{opt.name}</button>
+                                    <button className={`${styles.modeItem} ${opt.isDisabled ? styles.modeItemDisabled : ''}`}>{opt.name}</button>
                                 </li>
                             )
                         })

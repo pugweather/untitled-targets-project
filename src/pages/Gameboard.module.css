@@ -162,6 +162,13 @@
       transform: translateY(-50%);
     }
 
+    .backButton {
+      position: absolute;
+      left: 0.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
     .actionIcon {
       width: 1.5rem;
       height: 1.5rem;

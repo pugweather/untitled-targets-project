@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useNavigate } from "react-router"
-import { Star, Home, ChevronLeft } from "lucide-react"
+import { Star, ArrowLeft } from "lucide-react"
 import { COURSES } from "../data/courses"
 import type { Course } from "../types"
 import styles from "./SelectCourse.module.css"
@@ -58,7 +58,7 @@ export default function SelectCourse() {
                                         className={styles.playButton}
                                         onClick={(e) => {
                                             e.stopPropagation()
-                                            // play action wired later
+                                            navigate(`/game/${course.courseId}`)
                                         }}
                                     >
                                         Play
@@ -69,13 +69,8 @@ export default function SelectCourse() {
                     })}
                 </div>
                 <div className={styles.bottomBar}>
-                    <button className={styles.navButton} onClick={() => navigate(-1)}>
-                        <ChevronLeft size={20} />
-                        <span>Back</span>
-                    </button>
-                    <button className={styles.navButton} onClick={() => navigate('/')}>
-                        <Home size={20} />
-                        <span>Home</span>
+                    <button className={styles.navButton} onClick={() => navigate(-1)} aria-label="Back">
+                        <ArrowLeft size={28} />
                     </button>
                 </div>
             </div>

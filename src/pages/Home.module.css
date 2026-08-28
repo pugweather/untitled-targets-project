@@ -138,42 +138,6 @@
     width: min(20rem, 80vw);
 }
 
-.modeItem {
-    width: 100%;
-    padding: 1rem 1.5rem;
-    font-size: 1.25rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.9);
-    background: rgba(7, 7, 10, 0.65);
-    border: 1px solid rgba(5, 217, 232, 0.3);
-    border-radius: 8px;
-    cursor: pointer;
-    position: relative;
-    z-index: 1;
-    transition:
-        color 0.2s ease,
-        background 0.2s ease,
-        border-color 0.2s ease,
-        box-shadow 0.2s ease,
-        transform 0.1s ease;
-}
-
-.modeItem:hover {
-    color: #fff;
-    background: rgba(5, 217, 232, 0.08);
-    border-color: rgba(5, 217, 232, 0.8);
-    box-shadow:
-        0 0 20px 4px rgba(5, 217, 232, 0.2),
-        inset 0 0 12px rgba(5, 217, 232, 0.05);
-    transform: translateY(-2px);
-}
-
-.modeItem:active {
-    transform: translateY(0);
-}
-
 .fragment {
     position: absolute;
     width: 0.75rem;
@@ -215,4 +179,56 @@
 .audioIcon {
     width: 1.5rem;
     height: 1.5rem;
+}
+
+.modeItem {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.9);
+    background: rgba(7, 7, 10, 0.65);
+    border: 1px solid rgba(5, 217, 232, 0.3);
+    border-radius: 8px;
+    cursor: pointer;
+    transition:
+        color 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.1s ease;
+}
+
+.modeItem:hover {
+    color: #fff;
+    background: rgba(5, 217, 232, 0.08);
+    border-color: rgba(5, 217, 232, 0.8);
+    box-shadow:
+        0 0 20px 4px rgba(5, 217, 232, 0.2),
+        inset 0 0 12px rgba(5, 217, 232, 0.05);
+    transform: translateY(-2px);
+}
+
+.modeItem:active {
+    transform: translateY(0);
+}
+
+.modeItemDisabled {
+    color: rgba(255, 255, 255, 0.45);
+    background: rgba(7, 7, 10, 0.4);
+    border-color: rgba(5, 217, 232, 0.15);
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.modeItemDisabled:hover,
+.modeItemDisabled:active {
+    color: rgba(255, 255, 255, 0.45);
+    background: rgba(7, 7, 10, 0.4);
+    border-color: rgba(5, 217, 232, 0.15);
+    transform: none;
+    box-shadow: none;
+    opacity: 0.5;
 }

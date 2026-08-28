@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
-import { useNavigate } from "react-router"
-import { RotateCw, Home } from "lucide-react"
+import { useNavigate, useParams } from "react-router"
+import { RotateCw, Home, ArrowLeft } from "lucide-react"
 import type { Score } from "../types"
 import styles from './Gameboard.module.css'
 import LeaderboardModal from "../components/LeaderboardModal"
@@ -10,9 +10,15 @@ export default function GameBoard() {
     const NUM_TARGETS_TO_SHOW = 5
     const INITIAL_COUNTDOWN = 3
 
-    const course = COURSES[0]
+    const {courseId} = useParams()
 
-    const {courseId, targets} = course
+    const course = COURSES.find(c => c.courseId === Number(courseId))
+    // Terminate if course not found
+    // TODO: send back to course select screen or something?
+    if (!course) return
+    // const course = COURSES[0]
+
+    const {targets} = course
 
     const navigate = useNavigate()
 
@@ -109,6 +115,9 @@ export default function GameBoard() {
         <div className={styles.page}>
             {showLeaderboard && <LeaderboardModal recentScore={timerText} course={course} onRestart={playGame} onClose={() => setShowLeaderboard(false)}/>}
             <div className={styles.topButtonsWrapper}>
+                <button className={`${styles.actionButton} ${styles.backButton}`} onClick={() => navigate(-1)} aria-label="Back">
+                    <ArrowLeft className={styles.actionIcon} strokeWidth={2.5} />
+                </button>
                 <div className={styles.timerText}>{timerText}</div>
                 <button className={styles.actionButton} onClick={playGame} aria-label="Restart">
                     <RotateCw className={styles.actionIcon} strokeWidth={2.5} />
