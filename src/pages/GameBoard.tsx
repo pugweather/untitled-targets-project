@@ -85,7 +85,7 @@ export default function GameBoard() {
         const lastTargInRange = Math.min(targetsRange[1] + 1, targets.length)
 
         // Restart game if won
-        const gameFinished = nextTargToClick >= lastTargInRange
+        const gameFinished = nextTargToClick > lastTargInRange
         if (gameFinished) {
 
             // Store score in local storage
@@ -124,6 +124,7 @@ export default function GameBoard() {
         setCountdown(INITIAL_COUNTDOWN)
         setIsPlaying(false)
         setFadingTargets([])
+        setShowLeaderboard(false)
     }
 
     return (
