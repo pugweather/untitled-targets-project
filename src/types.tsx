@@ -1,6 +1,13 @@
+import type { TransitionEvent } from "react"
+
 export type Target = {
     left: number,
     top: number
+}
+
+export type FadingTargetProps = {
+    target: Target,
+    onFadeEnd: (e: TransitionEvent<HTMLDivElement>) => void
 }
 
 export type HomeTarget = {

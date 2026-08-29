@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react"
 import { useNavigate, useParams } from "react-router"
 import { RotateCw, Home, ArrowLeft } from "lucide-react"
-import type { Score } from "../types"
+import type { Score, Target } from "../types"
 import styles from './Gameboard.module.css'
 import LeaderboardModal from "../components/LeaderboardModal"
+import { FadingTarget } from "../components/FadingTarget"
 import { COURSES } from "../data/courses"
 
 export default function GameBoard() {
@@ -31,8 +32,9 @@ export default function GameBoard() {
     const [targetsRange, setTargetsRange] = useState([0, NUM_TARGETS_TO_SHOW])
     const [firstTargIdx, lastTargIdx] = targetsRange
     const visibleTargets = targets.slice(firstTargIdx, lastTargIdx)
-    // Animates away targets as they are clicked
-    const [exiting, setExiting] = useState(false)
+    // Separate targets that are fading out after being tapped
+    // so that we can advance the new range instantly (previously needed to wait for animation to end before tapping next target)
+    const [fadingTargets, setFadingTargets] = useState<Target[]>([])
 
     // Current timer
     const minutes = Math.floor(timer / 60)
@@ -59,11 +61,23 @@ export default function GameBoard() {
     }, [isPlaying, timer])
 
     function clickTarget(idx: number) {
-        if (!isPlaying || idx !== 0 || exiting) return
-        setExiting(true)
+
+        // Only be able to click first targ in array WHILE playing
+        if (!isPlaying || idx !== 0) return
+        
+        const nextTargToClick = targetsRange[0] + 1
+        const lastTargInRange = Math.min(targetsRange[1] + 1, targets.length)
+        setTargetsRange([nextTargToClick, lastTargInRange])
+
+        const clickedTarg = visibleTargets[0]
+        if (clickedTarg) {
+            setFadingTargets(prev => prev.some(t => t === clickedTarg) ? [...prev] : [...prev, clickedTarg])
+        } else {
+            console.error("Not able to fade out clicked targ???? BUG!?!?")
+        }
     }
 
-    function handleFadeEnd(e: React.TransitionEvent<HTMLDivElement>) {
+    function handleFadeEnd(target: Target, e: React.TransitionEvent<HTMLDivElement>) {
 
         if (e.propertyName !== 'opacity') return
 
@@ -90,11 +104,12 @@ export default function GameBoard() {
             localStorage.setItem(key, JSON.stringify(scores))
 
             setIsPlaying(false)
+            setFadingTargets([])
             setCountdown(null)
             setShowLeaderboard(true)
         }
-        setTargetsRange([nextTargToClick, lastTargInRange])
-        setExiting(false)
+        // setTargetsRange([nextTargToClick, lastTargInRange])
+        setFadingTargets(prev => prev.filter(t => t !== target))
     }
 
     // function resetGameState() {
@@ -108,7 +123,7 @@ export default function GameBoard() {
         setTimer(0) // Setting timer to non NULL value will start iniating the countdown to play
         setCountdown(INITIAL_COUNTDOWN)
         setIsPlaying(false)
-        setShowLeaderboard(false)
+        setFadingTargets([])
     }
 
     return (
@@ -132,13 +147,16 @@ export default function GameBoard() {
                         {countdown}
                     </div>
                 )}
+                {fadingTargets.map((targ) =>
+                    <FadingTarget key={`${targ.left}-${targ.top}`} target={targ} onFadeEnd={(e) => handleFadeEnd(targ, e)}/>
+                )}
                 {visibleTargets.map((targ, idx) => (
                     <div
                         key={`${targ.left}-${targ.top}`}
-                        className={`${styles.target} ${styles[`step${idx}`]} ${exiting && idx === 0 ? styles.exiting : ''}`}
+                        className={`${styles.target} ${styles[`step${idx}`]}`}
                         style={{ left: targ.left + '%', top: targ.top + '%' }}
                         onMouseDown={() => clickTarget(idx)}
-                        onTransitionEnd={exiting && idx === 0 ? handleFadeEnd : undefined}
+                        // onTransitionEnd={exiting && idx === 0 ? (e) => handleFadeEnd(targ, e) : undefined}
                     />
                 ))}
                 <svg
@@ -152,7 +170,7 @@ export default function GameBoard() {
                         return (
                             <line
                                 key={`${targ.left}-${targ.top}-${next.left}-${next.top}`}
-                                className={`${styles.connector} ${exiting && idx === 0 ? styles.connectorExit : ''}`}
+                                // className={`${styles.connector} ${exiting && idx === 0 ? styles.connectorExit : ''}`}
                                 x1={targ.left + '%'}
                                 y1={targ.top + '%'}
                                 x2={next.left + '%'}
