@@ -52,6 +52,17 @@
     filter 0.12s ease-out;
 }
 
+/* Make target hitboxes slightly bigger where the blur is */
+.target::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 9px;
+  background: rgba(0, 0, 0, 0.01);  /* near-invisible but still a hit target */
+  z-index: 1;
+  pointer-events: auto;
+}
+
 .exiting {
   opacity: 0;
   transform: translate(-50%, -50%) scale(1.6);
