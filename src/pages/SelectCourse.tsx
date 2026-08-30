@@ -54,15 +54,27 @@ export default function SelectCourse() {
                                             />
                                         ))}
                                     </div>
-                                    <button
-                                        className={styles.playButton}
-                                        onClick={(e) => {
-                                            e.stopPropagation()
-                                            navigate(`/game/${course.courseId}`)
-                                        }}
-                                    >
-                                        Play
-                                    </button>
+                                    <div className={styles.playButtons}>
+                                        <button
+                                            className={styles.playButton}
+                                            onClick={(e) => {
+                                                e.stopPropagation()
+                                                navigate(`/game/v1/${course.courseId}`)
+                                            }}
+                                        >
+                                            Play v1
+                                        </button>
+                                        <button 
+                                            className={styles.playButton} 
+                                            disabled
+                                            onClick={(e) => {
+                                                e.stopPropagation()
+                                                // navigate(`/game/v2/${course.courseId}`)
+                                            }}
+                                        >
+                                            Play v2
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         )

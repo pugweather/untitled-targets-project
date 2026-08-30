@@ -216,3 +216,15 @@
     background: rgba(5, 217, 232, 0.12);
     box-shadow: 0 0 18px 3px rgba(5, 217, 232, 0.2);
 }
+
+.playButtons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.playButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
