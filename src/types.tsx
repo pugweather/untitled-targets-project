@@ -2,7 +2,9 @@ import type { TransitionEvent } from "react"
 
 export type Target = {
     left: number,
-    top: number
+    top: number,
+    spawnTime?: number,
+    despawnTime?: number
 }
 
 export type FadingTargetProps = {

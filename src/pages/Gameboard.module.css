@@ -50,6 +50,20 @@
     opacity 0.12s ease-out,
     transform 0.12s ease-out,
     filter 0.12s ease-out;
+  animation: spawnIn  0.2s ease-out;
+}
+
+@keyframes spawnIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  to {
+    opacity: 1;
+    /* --scale is for step0 target (scaled up), 1 is applied to all other targets  */
+    /* TODO: we don't want this for v2 tho....ffs */
+    transform: translate(-50%, -50%) scale(var(--scale, 1)); 
+  }
 }
 
 /* Make target hitboxes slightly bigger where the blur is */

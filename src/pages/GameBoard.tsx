@@ -7,7 +7,11 @@ import LeaderboardModal from "../components/LeaderboardModal"
 import { FadingTarget } from "../components/FadingTarget"
 import { COURSES } from "../data/courses"
 
-export default function GameBoard() {
+type GameBoardProps = {
+    mode: string
+}
+
+export default function GameBoard({mode}: GameBoardProps) {
     const NUM_TARGETS_TO_SHOW = 5
     const INITIAL_COUNTDOWN = 3
 
@@ -29,9 +33,17 @@ export default function GameBoard() {
     const [timer, setTimer] = useState<number>(0)
 
     // Target visibility
+
+    // V1
+    const [playedIndices, setPlayedIndices] = useState(new Set())
+
+    // V2
     const [targetsRange, setTargetsRange] = useState([0, NUM_TARGETS_TO_SHOW])
     const [firstTargIdx, lastTargIdx] = targetsRange
-    const visibleTargets = targets.slice(firstTargIdx, lastTargIdx)
+
+    const visibleTargets = mode === "v1" ? 
+        targets.slice(firstTargIdx, lastTargIdx) : 
+        targets.filter((t, idx) => !playedIndices.has(idx) && t.despawnTime !== undefined && t.spawnTime !== undefined && (timer > t.spawnTime && timer < t.despawnTime))
     // Separate targets that are fading out after being tapped
     // so that we can advance the new range instantly (previously needed to wait for animation to end before tapping next target)
     const [fadingTargets, setFadingTargets] = useState<Target[]>([])
@@ -56,8 +68,22 @@ export default function GameBoard() {
 
     useEffect(() => {
         if (!isPlaying) return
-        const t = setTimeout(() => setTimer(prev => prev + 0.1), 100)
+
+        const newTime = timer + 0.1
+        const t = setTimeout(() => setTimer(newTime), 100)
+
+        if (mode === "v2") {
+            const newPlayedIndices = new Set(playedIndices)
+            targets.forEach((t, idx) => {
+                if (t.despawnTime !== undefined && timer >= t.despawnTime) {
+                    newPlayedIndices.add(idx)
+                }
+            })
+            setPlayedIndices(newPlayedIndices)
+        }
+
         return () => clearTimeout(t)
+
     }, [isPlaying, timer])
 
     function clickTarget(idx: number) {
@@ -154,35 +180,39 @@ export default function GameBoard() {
                 {visibleTargets.map((targ, idx) => (
                     <div
                         key={`${targ.left}-${targ.top}`}
-                        className={`${styles.target} ${styles[`step${idx}`]}`}
+                        className={`${styles.target} ${mode === "v1" ? styles[`step${idx}`] : ''}`}
                         style={{ left: targ.left + '%', top: targ.top + '%' }}
                         onMouseDown={() => clickTarget(idx)}
                         // onTransitionEnd={exiting && idx === 0 ? (e) => handleFadeEnd(targ, e) : undefined}
                     />
                 ))}
-                <svg
-                    className={styles.targetConnectors}
-                    width="100%"
-                    height="100%"
-                >
-                    {visibleTargets.map((targ, idx) => {
-                        const next = visibleTargets[idx + 1]
-                        if (!next) return null
-                        return (
-                            <line
-                                key={`${targ.left}-${targ.top}-${next.left}-${next.top}`}
-                                // className={`${styles.connector} ${exiting && idx === 0 ? styles.connectorExit : ''}`}
-                                x1={targ.left + '%'}
-                                y1={targ.top + '%'}
-                                x2={next.left + '%'}
-                                y2={next.top + '%'}
-                                stroke="rgba(255, 255, 255, 0.25)"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                            />
-                        )
-                    })}
-                </svg>
+                {
+                    (mode === "v1" && 
+                    <svg
+                        className={styles.targetConnectors}
+                        width="100%"
+                        height="100%"
+                    >
+                        {visibleTargets.map((targ, idx) => {
+                            const next = visibleTargets[idx + 1]
+                            if (!next) return null
+                            return (
+                                <line
+                                    key={`${targ.left}-${targ.top}-${next.left}-${next.top}`}
+                                    // className={`${styles.connector} ${exiting && idx === 0 ? styles.connectorExit : ''}`}
+                                    x1={targ.left + '%'}
+                                    y1={targ.top + '%'}
+                                    x2={next.left + '%'}
+                                    y2={next.top + '%'}
+                                    stroke="rgba(255, 255, 255, 0.25)"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                />
+                            )
+                        })}
+                    </svg>)
+
+                }
             </div>
         </div>
     )

@@ -66,10 +66,9 @@ export default function SelectCourse() {
                                         </button>
                                         <button 
                                             className={styles.playButton} 
-                                            disabled
                                             onClick={(e) => {
                                                 e.stopPropagation()
-                                                // navigate(`/game/v2/${course.courseId}`)
+                                                navigate(`/game/v2/${course.courseId}`)
                                             }}
                                         >
                                             Play v2
