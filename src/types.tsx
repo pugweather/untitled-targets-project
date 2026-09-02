@@ -7,11 +7,6 @@ export type Target = {
     despawnTime?: number
 }
 
-export type FadingTargetProps = {
-    target: Target,
-    onFadeEnd: (e: TransitionEvent<HTMLDivElement>) => void
-}
-
 export type HomeTarget = {
     id: number,
     left: number,

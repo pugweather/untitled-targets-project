@@ -35,6 +35,23 @@
   pointer-events: none;
 }
 
+.fadingTarget {
+  position: absolute;
+  width: 5.5%;
+  aspect-ratio: 1 / 1;
+  border-radius: 9px;
+  transform: translate(-50%, -50%) scale(var(--scale, 1));
+  /* cursor: pointer; */
+  color: color-mix(in srgb, red, blue var(--mix, 0%));
+  background: color-mix(in srgb, red, blue var(--mix, 0%));
+  box-shadow: 0 0 16px 4px currentColor;
+  z-index: 1;
+  transition:
+    opacity 0.2s ease-out,
+    transform 0.2s ease-out,
+    filter 0.2s ease-out;
+}
+
 .target {
   position: absolute;
   width: 5.5%;
@@ -47,9 +64,9 @@
   box-shadow: 0 0 16px 4px currentColor;
   z-index: 1;
   transition:
-    opacity 0.12s ease-out,
-    transform 0.12s ease-out,
-    filter 0.12s ease-out;
+    opacity 0.2s ease-out,
+    transform 0.2s ease-out,
+    filter 0.2s ease-out;
   animation: spawnIn  0.2s ease-out;
 }
 
@@ -79,8 +96,8 @@
 
 .exiting {
   opacity: 0;
-  transform: translate(-50%, -50%) scale(1.6);
-  filter: brightness(2.2);
+  transform: translate(-50%, -50%) scale(1.2);
+  filter: brightness(1.5);
   pointer-events: none;
 }
 

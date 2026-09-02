@@ -76,7 +76,10 @@ export default function GameBoard({mode}: GameBoardProps) {
             const newPlayedIndices = new Set(playedIndices)
             targets.forEach((t, idx) => {
                 if (t.despawnTime !== undefined && timer >= t.despawnTime) {
-                    newPlayedIndices.add(idx)
+                    if (!newPlayedIndices.has(idx)) {
+                        newPlayedIndices.add(idx)
+                        setFadingTargets(prev => prev.some(existing => t === existing) ? [...prev] : [...prev, t])
+                    }
                 }
             })
             setPlayedIndices(newPlayedIndices)
@@ -175,7 +178,7 @@ export default function GameBoard({mode}: GameBoardProps) {
                     </div>
                 )}
                 {fadingTargets.map((targ) =>
-                    <FadingTarget key={`${targ.left}-${targ.top}`} target={targ} onFadeEnd={(e) => handleFadeEnd(targ, e)}/>
+                    <FadingTarget key={`${targ.left}-${targ.top}`} target={targ} mode={mode} onFadeEnd={(e) => handleFadeEnd(targ, e)}/>
                 )}
                 {visibleTargets.map((targ, idx) => (
                     <div
