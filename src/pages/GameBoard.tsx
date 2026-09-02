@@ -121,7 +121,10 @@ export default function GameBoard({mode}: GameBoardProps) {
         const lastTargInRange = Math.min(targetsRange[1] + 1, targets.length)
 
         // Restart game if won
-        const gameFinished = nextTargToClick > lastTargInRange
+        const gameFinished = mode === "v1" ? 
+            nextTargToClick > lastTargInRange :
+            playedIndices.size >= targets.length
+
         if (gameFinished) {
 
             console.log(clickedTargets.size)
@@ -145,6 +148,8 @@ export default function GameBoard({mode}: GameBoardProps) {
             setFadingTargets([])
             setCountdown(null)
             setShowLeaderboard(true)
+            setPlayedIndices(new Set())
+            setClickedTargets(new Set())
         }
         // setTargetsRange([nextTargToClick, lastTargInRange])
         setFadingTargets(prev => prev.filter(t => t !== target))
