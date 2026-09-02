@@ -34,10 +34,11 @@ export default function GameBoard({mode}: GameBoardProps) {
 
     // Target visibility
 
-    // V1
-    const [playedIndices, setPlayedIndices] = useState(new Set())
-
     // V2
+    const [playedIndices, setPlayedIndices] = useState(new Set())
+    const [clickedTargets, setClickedTargets] = useState(new Set())
+    
+    // V1
     const [targetsRange, setTargetsRange] = useState([0, NUM_TARGETS_TO_SHOW])
     const [firstTargIdx, lastTargIdx] = targetsRange
 
@@ -94,12 +95,18 @@ export default function GameBoard({mode}: GameBoardProps) {
         // Only be able to click first targ in array WHILE playing
         if (!isPlaying || idx !== 0) return
         
-        const nextTargToClick = targetsRange[0] + 1
-        const lastTargInRange = Math.min(targetsRange[1] + 1, targets.length)
-        setTargetsRange([nextTargToClick, lastTargInRange])
+        if (mode === "v1") {
+            const lastTargInRange = Math.min(targetsRange[1] + 1, targets.length)
+            const nextTargToClick = targetsRange[0] + 1
+            setTargetsRange([nextTargToClick, lastTargInRange])
+        }
 
         const clickedTarg = visibleTargets[0]
         if (clickedTarg) {
+            if (mode === "v2") {
+                const clickedIdx = targets.findIndex(t => t === clickedTarg)
+                setClickedTargets(prev => new Set([...prev, clickedIdx]))
+            }
             setFadingTargets(prev => prev.some(t => t === clickedTarg) ? [...prev] : [...prev, clickedTarg])
         } else {
             console.error("Not able to fade out clicked targ???? BUG!?!?")
@@ -116,6 +123,8 @@ export default function GameBoard({mode}: GameBoardProps) {
         // Restart game if won
         const gameFinished = nextTargToClick > lastTargInRange
         if (gameFinished) {
+
+            console.log(clickedTargets.size)
 
             // Store score in local storage
             const key = "course-" + courseId
