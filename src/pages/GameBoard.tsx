@@ -154,6 +154,7 @@ export default function GameBoard({mode}: GameBoardProps) {
         setIsPlaying(false)
         setFadingTargets([])
         setShowLeaderboard(false)
+        setPlayedIndices(new Set())
     }
 
     return (
