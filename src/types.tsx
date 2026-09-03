@@ -30,8 +30,12 @@ export type Course = {
     targets: Target[]
 }
 
-export type Score = {
-    date: string,
-    time: string,
-    rawTime: number
-}
+// export type Score = {
+//     date: string,
+//     time: string,
+//     rawTime: number
+// }
+
+export type Score =
+    | { mode: "v1"; date: string; time: string; rawTime: number }
+    | { mode: "v2"; date: string; score: number }

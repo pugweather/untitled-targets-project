@@ -37,17 +37,20 @@ export default function GameBoard({mode}: GameBoardProps) {
     // V2
     const [playedIndices, setPlayedIndices] = useState(new Set())
     const [clickedTargets, setClickedTargets] = useState(new Set())
+
     
     // V1
     const [targetsRange, setTargetsRange] = useState([0, NUM_TARGETS_TO_SHOW])
     const [firstTargIdx, lastTargIdx] = targetsRange
 
+    // Shared Version state
     const visibleTargets = mode === "v1" ? 
         targets.slice(firstTargIdx, lastTargIdx) : 
         targets.filter((t, idx) => !playedIndices.has(idx) && t.despawnTime !== undefined && t.spawnTime !== undefined && (timer > t.spawnTime && timer < t.despawnTime))
     // Separate targets that are fading out after being tapped
     // so that we can advance the new range instantly (previously needed to wait for animation to end before tapping next target)
     const [fadingTargets, setFadingTargets] = useState<Target[]>([])
+    const [recentScore, setRecentScore] = useState<string | null>(null)
 
     // Current timer
     const minutes = Math.floor(timer / 60)
@@ -93,7 +96,8 @@ export default function GameBoard({mode}: GameBoardProps) {
     function clickTarget(idx: number) {
 
         // Only be able to click first targ in array WHILE playing
-        if (!isPlaying || idx !== 0) return
+        if (!isPlaying) return
+        if (mode === "v1" && idx !== 0) return
         
         if (mode === "v1") {
             const lastTargInRange = Math.min(targetsRange[1] + 1, targets.length)
@@ -101,16 +105,25 @@ export default function GameBoard({mode}: GameBoardProps) {
             setTargetsRange([nextTargToClick, lastTargInRange])
         }
 
-        const clickedTarg = visibleTargets[0]
+        const clickedTarg = visibleTargets[idx]
         if (clickedTarg) {
             if (mode === "v2") {
                 const clickedIdx = targets.findIndex(t => t === clickedTarg)
                 setClickedTargets(prev => new Set([...prev, clickedIdx]))
+                if (clickedIdx !== -1) {
+                    const newPlayedIndices = new Set(playedIndices)
+                    newPlayedIndices.add(clickedIdx)
+                    setPlayedIndices(newPlayedIndices)
+                } else {
+                    console.log("BUG??? click on targ: " + JSON.stringify(clickedTarg) + " didn't register")
+                }
             }
             setFadingTargets(prev => prev.some(t => t === clickedTarg) ? [...prev] : [...prev, clickedTarg])
         } else {
             console.error("Not able to fade out clicked targ???? BUG!?!?")
         }
+
+            
     }
 
     function handleFadeEnd(target: Target, e: React.TransitionEvent<HTMLDivElement>) {
@@ -127,23 +140,36 @@ export default function GameBoard({mode}: GameBoardProps) {
 
         if (gameFinished) {
 
-            console.log(clickedTargets.size)
-
             // Store score in local storage
-            const key = "course-" + courseId
+            const key = "course-" + courseId + "-mode-" + mode
             
             const now = new Date()
             const date = `${now.getMonth() + 1}/${now.getDate()}/${now.getFullYear()}`
 
             const scores = JSON.parse(localStorage.getItem(key) || '[]') as Score[]
-            scores.push({
-                date,
-                time: timerText,
-                rawTime: timer
-            })
-            scores.sort((a,b) => a.rawTime - b.rawTime)
+            const newScore: Score = mode === "v1" ?
+                {
+                    mode: "v1",
+                    date,
+                    time: timerText,
+                    rawTime: timer
+                } 
+                :
+                {
+                    mode: "v2",
+                    date,
+                    score: clickedTargets.size,
+                }
+            scores.push(newScore)
+
+            if (mode === "v1") {
+                scores.sort((a,b) => a.mode === "v1" && b.mode === "v1" ? a.rawTime - b.rawTime : 0)
+            }
             localStorage.setItem(key, JSON.stringify(scores))
 
+            setRecentScore(getRecentScore())
+
+            // Reset game state
             setIsPlaying(false)
             setFadingTargets([])
             setCountdown(null)
@@ -171,9 +197,20 @@ export default function GameBoard({mode}: GameBoardProps) {
         setPlayedIndices(new Set())
     }
 
+    function getRecentScore() {
+        switch(mode) {
+            case "v1":
+                return timerText
+            case "v2":
+                return clickedTargets.size + ' / ' + targets.length
+            default:
+                return "N/A"
+        }
+    }
+
     return (
         <div className={styles.page}>
-            {showLeaderboard && <LeaderboardModal recentScore={timerText} course={course} onRestart={playGame} onClose={() => setShowLeaderboard(false)}/>}
+            {showLeaderboard && <LeaderboardModal recentScore={recentScore} course={course} mode={mode} onRestart={playGame} onClose={() => setShowLeaderboard(false)}/>}
             <div className={styles.topButtonsWrapper}>
                 <button className={`${styles.actionButton} ${styles.backButton}`} onClick={() => navigate(-1)}>
                     <ArrowLeft className={styles.actionIcon} strokeWidth={2.5} />

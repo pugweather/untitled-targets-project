@@ -6,19 +6,20 @@ import styles from './LeaderboardModal.module.css'
 
 type LeaderboardModalProps = {
     course: Course,
-    recentScore: string,
+    recentScore: string | null,
+    mode: string,
     onClose: () => void,
     onRestart: () => void
 }
 
-export default function LeaderboardModal({course, recentScore, onRestart, onClose}: LeaderboardModalProps) {
+export default function LeaderboardModal({course, recentScore, mode, onRestart, onClose}: LeaderboardModalProps) {
     const node = document.getElementById("modal")
     if (!node) return null
 
     const NUM_SCORES_TO_DISPLAY = 5
 
     const {courseId, title} = course
-    const scores = JSON.parse(localStorage.getItem("course-" + courseId) || "[]") as Score[]
+    const scores = JSON.parse(localStorage.getItem("course-" + courseId + '-mode-' + mode) || "[]") as Score[]
 
     const navigate = useNavigate()
 
@@ -33,7 +34,8 @@ export default function LeaderboardModal({course, recentScore, onRestart, onClos
                 <ul className={styles.leaderboardList}>
                     {
                         scores?.slice(0, NUM_SCORES_TO_DISPLAY).map((data, idx) => {
-                        const {date, time} = data
+                        const {date, mode} = data
+                        const score = mode === "v1" ? data.time : data.score
                         return (
                             <li className={`${styles.leaderboardRow} ${styles["top" + (idx + 1)]}`}>
                                 {
@@ -45,7 +47,7 @@ export default function LeaderboardModal({course, recentScore, onRestart, onClos
                                     <span style={{width: "10%"}}>{idx + 1}.</span>
                                 }
                                 <span style={{width: "40%"}}>{date}</span>
-                                <span style={{width: "40%"}} className={styles.rowTime}>{time}</span>
+                                <span style={{width: "40%"}} className={styles.rowTime}>{score}</span>
                             </li>
                         )
                         })
