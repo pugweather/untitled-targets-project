@@ -166,6 +166,8 @@ export default function GameBoard({mode}: GameBoardProps) {
 
             if (mode === "v1") {
                 scores.sort((a,b) => a.mode === "v1" && b.mode === "v1" ? a.rawTime - b.rawTime : 0)
+            } else if (mode === "v2") {
+                scores.sort((a,b) => a.mode === "v2" && b.mode === "v2" ? b.score - a.score : 0)
             }
             localStorage.setItem(key, JSON.stringify(scores))
 
