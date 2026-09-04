@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useNavigate, useParams } from "react-router"
 import { RotateCw, Home, ArrowLeft } from "lucide-react"
 import type { Score, Target } from "../types"
@@ -34,14 +34,14 @@ export default function GameBoard({mode}: GameBoardProps) {
 
     // Target visibility
 
-    // V2
-    const [playedIndices, setPlayedIndices] = useState(new Set())
-    const [clickedTargets, setClickedTargets] = useState(new Set())
-
-    
     // V1
     const [targetsRange, setTargetsRange] = useState([0, NUM_TARGETS_TO_SHOW])
     const [firstTargIdx, lastTargIdx] = targetsRange
+
+    // V2
+    const [playedIndices, setPlayedIndices] = useState(new Set())
+    const [clickedTargets, setClickedTargets] = useState(new Set())
+    const alreadyFinished = useRef(false)
 
     // Shared Version state
     const visibleTargets = mode === "v1" ? 
@@ -138,7 +138,9 @@ export default function GameBoard({mode}: GameBoardProps) {
             nextTargToClick > lastTargInRange :
             playedIndices.size >= targets.length
 
-        if (gameFinished) {
+        if (gameFinished && !alreadyFinished.current) {
+
+            alreadyFinished.current = true
 
             // Store score in local storage
             const key = "course-" + courseId + "-mode-" + mode
@@ -195,6 +197,9 @@ export default function GameBoard({mode}: GameBoardProps) {
         setFadingTargets([])
         setShowLeaderboard(false)
         setPlayedIndices(new Set())
+        setClickedTargets(new Set())
+        setRecentScore(null)
+        alreadyFinished.current = false
     }
 
     function getRecentScore() {
