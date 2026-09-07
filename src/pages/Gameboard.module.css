@@ -101,6 +101,70 @@
   pointer-events: none;
 }
 
+/* Pop / crumble animation classes -- used by FadingTarget once the TODOs are wired up */
+.fadingTargetContainer {
+  position: absolute;
+  width: 5.5%;
+  aspect-ratio: 1 / 1;
+  transform: translate(-50%, -50%) scale(var(--scale, 1));
+  pointer-events: none;
+  z-index: 1;
+  color: color-mix(in srgb, red, blue var(--mix, 0%));
+  border-radius: 9px;
+}
+
+.fadingTargetVisual {
+  position: absolute;
+  inset: 0;
+  border-radius: 9px;
+  background: currentColor;
+  box-shadow: 0 0 16px 4px currentColor;
+}
+
+.fadingTargetVisual.pop {
+  animation: pop 0.2s ease-in forwards;
+}
+
+@keyframes pop {
+  0% {
+    opacity: 1;
+    transform: scale(1.25) rotate(360deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+.fadingTargetVisual.miss {
+  animation: miss 0.25s ease-out forwards;
+}
+
+@keyframes miss {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.75);
+    filter: brightness(0.5);
+  }
+}
+
+.crumbleFragment {
+  position: absolute;
+  width: 0.4rem;
+  height: 0.4rem;
+  margin-left: -0.2rem;
+  margin-top: -0.2rem;
+  border-radius: 2px;
+  box-shadow: 0 0 4px 1px currentColor;
+  pointer-events: none;
+  z-index: 0;
+}
+
 .step0 {
   --mix: 0%;
   --scale: 1.08;

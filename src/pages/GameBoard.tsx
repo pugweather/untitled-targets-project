@@ -11,6 +11,8 @@ type GameBoardProps = {
     mode: string
 }
 
+type FadingTarget = Target & { clicked: boolean }
+
 export default function GameBoard({mode}: GameBoardProps) {
     const NUM_TARGETS_TO_SHOW = 5
     const INITIAL_COUNTDOWN = 3
@@ -49,7 +51,7 @@ export default function GameBoard({mode}: GameBoardProps) {
         targets.filter((t, idx) => !playedIndices.has(idx) && t.despawnTime !== undefined && t.spawnTime !== undefined && (timer > t.spawnTime && timer < t.despawnTime))
     // Separate targets that are fading out after being tapped
     // so that we can advance the new range instantly (previously needed to wait for animation to end before tapping next target)
-    const [fadingTargets, setFadingTargets] = useState<Target[]>([])
+    const [fadingTargets, setFadingTargets] = useState<FadingTarget[]>([])
     const [recentScore, setRecentScore] = useState<string | null>(null)
 
     // Current timer
@@ -82,7 +84,7 @@ export default function GameBoard({mode}: GameBoardProps) {
                 if (t.despawnTime !== undefined && timer >= t.despawnTime) {
                     if (!newPlayedIndices.has(idx)) {
                         newPlayedIndices.add(idx)
-                        setFadingTargets(prev => prev.some(existing => t === existing) ? [...prev] : [...prev, t])
+                        setFadingTargets(prev => prev.some(existing => t === existing) ? [...prev] : [...prev, {...t, clicked: false}])
                     }
                 }
             })
@@ -118,7 +120,7 @@ export default function GameBoard({mode}: GameBoardProps) {
                     console.log("BUG??? click on targ: " + JSON.stringify(clickedTarg) + " didn't register")
                 }
             }
-            setFadingTargets(prev => prev.some(t => t === clickedTarg) ? [...prev] : [...prev, clickedTarg])
+            setFadingTargets(prev => prev.some(t => t === clickedTarg) ? [...prev] : [...prev, {...clickedTarg, clicked: true}])
         } else {
             console.error("Not able to fade out clicked targ???? BUG!?!?")
         }
@@ -126,9 +128,7 @@ export default function GameBoard({mode}: GameBoardProps) {
             
     }
 
-    function handleFadeEnd(target: Target, e: React.TransitionEvent<HTMLDivElement>) {
-
-        if (e.propertyName !== 'opacity') return
+    function handleFadeEnd(target: Target) {
 
         const nextTargToClick = targetsRange[0] + 1
         const lastTargInRange = Math.min(targetsRange[1] + 1, targets.length)
@@ -237,7 +237,7 @@ export default function GameBoard({mode}: GameBoardProps) {
                     </div>
                 )}
                 {fadingTargets.map((targ) =>
-                    <FadingTarget key={`${targ.left}-${targ.top}`} target={targ} mode={mode} onFadeEnd={(e) => handleFadeEnd(targ, e)}/>
+                    <FadingTarget key={`${targ.left}-${targ.top}`} target={targ} clicked={targ.clicked} mode={mode} onFadeEnd={() => handleFadeEnd(targ)}/>
                 )}
                 {visibleTargets.map((targ, idx) => (
                     <div
