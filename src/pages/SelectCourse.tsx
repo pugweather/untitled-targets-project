@@ -73,6 +73,15 @@ export default function SelectCourse() {
                                         >
                                             Play v2
                                         </button>
+                                        <button 
+                                            className={styles.playButton} 
+                                            onClick={(e) => {
+                                                e.stopPropagation()
+                                                navigate(`/game/v3/${course.courseId}`)
+                                            }}
+                                        >
+                                            Play v3 (in progress buggy af)
+                                        </button>
                                     </div>
                                 </div>
                             </div>
