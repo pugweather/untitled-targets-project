@@ -237,11 +237,11 @@ export default function GameBoard({mode}: GameBoardProps) {
                     </div>
                 )}
                 {fadingTargets.map((targ) =>
-                    <FadingTarget key={`${targ.left}-${targ.top}`} target={targ} clicked={targ.clicked} mode={mode} onFadeEnd={() => handleFadeEnd(targ)}/>
+                    <FadingTarget key={`${targ.left}-${targ.top}-${targ.spawnTime}`} target={targ} clicked={targ.clicked} mode={mode} onFadeEnd={() => handleFadeEnd(targ)}/>
                 )}
                 {visibleTargets.map((targ, idx) => (
                     <div
-                        key={`${targ.left}-${targ.top}`}
+                        key={`${targ.left}-${targ.top}-${targ.spawnTime}`}
                         className={`${styles.target} ${mode === "v1" ? styles[`step${idx}`] : ''}`}
                         style={{ left: targ.left + '%', top: targ.top + '%' }}
                         onMouseDown={() => clickTarget(idx)}

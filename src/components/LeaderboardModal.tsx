@@ -37,7 +37,7 @@ export default function LeaderboardModal({course, recentScore, mode, onRestart, 
                         const {date, mode} = data
                         const score = mode === "v1" ? data.time : data.score
                         return (
-                            <li className={`${styles.leaderboardRow} ${styles["top" + (idx + 1)]}`}>
+                            <li key={idx} className={`${styles.leaderboardRow} ${styles["top" + (idx + 1)]}`}>
                                 {
                                     idx < 3 ?
                                     <div className={styles.rankCell}>
