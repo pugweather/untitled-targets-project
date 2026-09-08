@@ -13,6 +13,13 @@ type GameBoardProps = {
 
 type FadingTarget = Target & { clicked: boolean }
 
+// TODO for v3:
+// Use ring to indicate when to tap target. When ring reaches target border, click target. prob
+// add few hundred ms of leeway where target can stil be clicked after ring touches border.
+// Add hitTime property to targets that represents optimal time to click target (i.e. moment ring touches target border)
+// Initially the ring will be 2-3x the size of the target. I think we can use css scale property to handle this. Should have a progress calculation
+// that uses spawn / despawn / hit times to calc progress. Progress scales from 0 -> 1 and progress changes the scale from 3 -> ~1
+
 export default function GameBoard({mode}: GameBoardProps) {
     const NUM_TARGETS_TO_SHOW = 5
     const INITIAL_COUNTDOWN = 3
