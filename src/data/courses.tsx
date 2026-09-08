@@ -2,9 +2,111 @@ import type { Course } from "../types";
 
 export const COURSES: Course[] = [
     {
+        courseId: 1,
+        title: "First Verse",
+        difficulty: 1,
+        image: "/courses/riff-cascade.png",
+        targets: [
+            // clump 1
+            { left: 9, top: 15, spawnTime: 0.0, despawnTime: 2.5 },
+            { left: 30, top: 12, spawnTime: 0.5, despawnTime: 3.0 },
+            { left: 32, top: 32, spawnTime: 1.0, despawnTime: 3.5 },
+            { left: 12, top: 30, spawnTime: 1.5, despawnTime: 4.0 },
+            { left: 20, top: 22, spawnTime: 2.0, despawnTime: 4.5 },
+            // clump 2
+            { left: 39, top: 15, spawnTime: 2.5, despawnTime: 5.0 },
+            { left: 60, top: 12, spawnTime: 3.0, despawnTime: 5.5 },
+            { left: 62, top: 32, spawnTime: 3.5, despawnTime: 6.0 },
+            { left: 42, top: 30, spawnTime: 4.0, despawnTime: 6.5 },
+            { left: 50, top: 22, spawnTime: 4.5, despawnTime: 7.0 },
+            // clump 3
+            { left: 69, top: 15, spawnTime: 5.0, despawnTime: 7.5 },
+            { left: 90, top: 12, spawnTime: 5.5, despawnTime: 8.0 },
+            { left: 92, top: 32, spawnTime: 6.0, despawnTime: 8.5 },
+            { left: 72, top: 30, spawnTime: 6.5, despawnTime: 9.0 },
+            { left: 80, top: 22, spawnTime: 7.0, despawnTime: 9.5 },
+            // clump 4
+            { left: 69, top: 71, spawnTime: 7.5, despawnTime: 10.0 },
+            { left: 90, top: 68, spawnTime: 8.0, despawnTime: 10.5 },
+            { left: 92, top: 88, spawnTime: 8.5, despawnTime: 11.0 },
+            { left: 72, top: 86, spawnTime: 9.0, despawnTime: 11.5 },
+            { left: 80, top: 78, spawnTime: 9.5, despawnTime: 12.0 },
+            // clump 5
+            { left: 39, top: 71, spawnTime: 10.0, despawnTime: 12.5 },
+            { left: 60, top: 68, spawnTime: 10.5, despawnTime: 13.0 },
+            { left: 62, top: 88, spawnTime: 11.0, despawnTime: 13.5 },
+            { left: 42, top: 86, spawnTime: 11.5, despawnTime: 14.0 },
+            { left: 50, top: 78, spawnTime: 12.0, despawnTime: 14.5 },
+            // clump 6
+            { left: 9, top: 71, spawnTime: 12.5, despawnTime: 15.0 },
+            { left: 30, top: 68, spawnTime: 13.0, despawnTime: 15.5 },
+            { left: 32, top: 88, spawnTime: 13.5, despawnTime: 16.0 },
+            { left: 12, top: 86, spawnTime: 14.0, despawnTime: 16.5 },
+            { left: 20, top: 78, spawnTime: 14.5, despawnTime: 17.0 },
+        ],
+    },
+    {
+        courseId: 2,
+        title: "Hill Runner",
+        difficulty: 3,
+        image: "/courses/hill-runner.png",
+        targets: [
+            // double: horizontal flick right
+            { left: 20, top: 50, spawnTime: 0.0, despawnTime: 1.1 },
+            { left: 38, top: 50, spawnTime: 0.2, despawnTime: 1.3 },
+            // triple: center stack, mid then below then above
+            { left: 60, top: 45, spawnTime: 1.15, despawnTime: 2.25 },
+            { left: 60, top: 62, spawnTime: 1.35, despawnTime: 2.45 },
+            { left: 60, top: 28, spawnTime: 1.55, despawnTime: 2.65 },
+            // quad: bottom zigzag left-to-right
+            { left: 15, top: 75, spawnTime: 2.5, despawnTime: 3.6 },
+            { left: 28, top: 60, spawnTime: 2.7, despawnTime: 3.8 },
+            { left: 41, top: 75, spawnTime: 2.9, despawnTime: 4.0 },
+            { left: 54, top: 60, spawnTime: 3.1, despawnTime: 4.2 },
+            // single: top-right poke
+            { left: 85, top: 30, spawnTime: 4.05, despawnTime: 5.15 },
+            // double: diagonal down-left flick
+            { left: 80, top: 20, spawnTime: 4.9, despawnTime: 6.0 },
+            { left: 62, top: 38, spawnTime: 5.1, despawnTime: 6.2 },
+            // triple: top arc right-to-left
+            { left: 85, top: 15, spawnTime: 6.0, despawnTime: 7.1 },
+            { left: 65, top: 22, spawnTime: 6.2, despawnTime: 7.3 },
+            { left: 45, top: 15, spawnTime: 6.4, despawnTime: 7.5 },
+            // quad: vertical zigzag down the right side
+            { left: 75, top: 15, spawnTime: 7.3, despawnTime: 8.4 },
+            { left: 88, top: 28, spawnTime: 7.5, despawnTime: 8.6 },
+            { left: 75, top: 41, spawnTime: 7.7, despawnTime: 8.8 },
+            { left: 88, top: 54, spawnTime: 7.9, despawnTime: 9.0 },
+            // double: diagonal up-right flick
+            { left: 30, top: 80, spawnTime: 8.8, despawnTime: 9.9 },
+            { left: 48, top: 68, spawnTime: 9.0, despawnTime: 10.1 },
+            // triple: center column, top then mid then bottom
+            { left: 50, top: 30, spawnTime: 9.9, despawnTime: 11.0 },
+            { left: 50, top: 55, spawnTime: 10.1, despawnTime: 11.2 },
+            { left: 50, top: 78, spawnTime: 10.3, despawnTime: 11.4 },
+            // quad: long diagonal climb left-to-right
+            { left: 15, top: 80, spawnTime: 11.2, despawnTime: 12.3 },
+            { left: 32, top: 65, spawnTime: 11.4, despawnTime: 12.5 },
+            { left: 49, top: 50, spawnTime: 11.6, despawnTime: 12.7 },
+            { left: 66, top: 35, spawnTime: 11.8, despawnTime: 12.9 },
+            // double: horizontal flick left
+            { left: 80, top: 60, spawnTime: 12.7, despawnTime: 13.8 },
+            { left: 62, top: 60, spawnTime: 12.9, despawnTime: 14.0 },
+            // triple: bottom zigzag
+            { left: 20, top: 70, spawnTime: 13.8, despawnTime: 14.9 },
+            { left: 35, top: 82, spawnTime: 14.0, despawnTime: 15.1 },
+            { left: 50, top: 70, spawnTime: 14.2, despawnTime: 15.3 },
+            // quad finale: wide zigzag sweep
+            { left: 15, top: 30, spawnTime: 15.1, despawnTime: 16.2 },
+            { left: 35, top: 55, spawnTime: 15.3, despawnTime: 16.4 },
+            { left: 55, top: 30, spawnTime: 15.5, despawnTime: 16.6 },
+            { left: 75, top: 55, spawnTime: 15.7, despawnTime: 16.8 },
+        ],
+    },
+    {
         courseId: 3,
-        title: "Zigzag",
-        difficulty: 2,
+        title: "Riff Cascade",
+        difficulty: 5,
         image: "/courses/zigzag.png",
         targets: [
             // verse 1: wide horizontal zigzag, big vertical swings
@@ -91,94 +193,6 @@ export const COURSES: Course[] = [
             { left: 86, top: 72, spawnTime: 17.94, despawnTime: 18.94 },
             { left: 92, top: 28, spawnTime: 18.12, despawnTime: 19.12 },
             { left: 96, top: 72, spawnTime: 18.3, despawnTime: 19.3 },
-        ],
-    },
-    {
-        courseId: 2,
-        title: "Hill Runner",
-        difficulty: 3,
-        image: "/courses/hill-runner.png",
-        targets: [
-            // clump 1
-            { left: 18, top: 66, spawnTime: 0.0, despawnTime: 1.5 },
-            { left: 32, top: 76, spawnTime: 0.3, despawnTime: 1.8 },
-            { left: 22, top: 90, spawnTime: 0.6, despawnTime: 2.1 },
-            { left: 8, top: 80, spawnTime: 0.9, despawnTime: 2.4 },
-            { left: 20, top: 78, spawnTime: 1.2, despawnTime: 2.7 },
-            // clump 2
-            { left: 48, top: 66, spawnTime: 1.5, despawnTime: 3.0 },
-            { left: 62, top: 76, spawnTime: 1.8, despawnTime: 3.3 },
-            { left: 52, top: 90, spawnTime: 2.1, despawnTime: 3.6 },
-            { left: 38, top: 80, spawnTime: 2.4, despawnTime: 3.9 },
-            { left: 50, top: 78, spawnTime: 2.7, despawnTime: 4.2 },
-            // clump 3
-            { left: 78, top: 66, spawnTime: 3.0, despawnTime: 4.5 },
-            { left: 92, top: 76, spawnTime: 3.3, despawnTime: 4.8 },
-            { left: 82, top: 90, spawnTime: 3.6, despawnTime: 5.1 },
-            { left: 68, top: 80, spawnTime: 3.9, despawnTime: 5.4 },
-            { left: 80, top: 78, spawnTime: 4.2, despawnTime: 5.7 },
-            // clump 4
-            { left: 78, top: 10, spawnTime: 4.5, despawnTime: 6.0 },
-            { left: 92, top: 20, spawnTime: 4.8, despawnTime: 6.3 },
-            { left: 82, top: 34, spawnTime: 5.1, despawnTime: 6.6 },
-            { left: 68, top: 24, spawnTime: 5.4, despawnTime: 6.9 },
-            { left: 80, top: 22, spawnTime: 5.7, despawnTime: 7.2 },
-            // clump 5
-            { left: 48, top: 10, spawnTime: 6.0, despawnTime: 7.5 },
-            { left: 62, top: 20, spawnTime: 6.3, despawnTime: 7.8 },
-            { left: 52, top: 34, spawnTime: 6.6, despawnTime: 8.1 },
-            { left: 38, top: 24, spawnTime: 6.9, despawnTime: 8.4 },
-            { left: 50, top: 22, spawnTime: 7.2, despawnTime: 8.7 },
-            // clump 6
-            { left: 18, top: 10, spawnTime: 7.5, despawnTime: 9.0 },
-            { left: 32, top: 20, spawnTime: 7.8, despawnTime: 9.3 },
-            { left: 22, top: 34, spawnTime: 8.1, despawnTime: 9.6 },
-            { left: 8, top: 24, spawnTime: 8.4, despawnTime: 9.9 },
-            { left: 20, top: 22, spawnTime: 8.7, despawnTime: 10.2 },
-        ],
-    },
-    {
-        courseId: 1,
-        title: "Riff Cascade",
-        difficulty: 4,
-        image: "/courses/riff-cascade.png",
-        targets: [
-            // clump 1
-            { left: 9, top: 15, spawnTime: 0.0, despawnTime: 1.5 },
-            { left: 30, top: 12, spawnTime: 0.3, despawnTime: 1.8 },
-            { left: 32, top: 32, spawnTime: 0.6, despawnTime: 2.1 },
-            { left: 12, top: 30, spawnTime: 0.9, despawnTime: 2.4 },
-            { left: 20, top: 22, spawnTime: 1.2, despawnTime: 2.7 },
-            // clump 2
-            { left: 39, top: 15, spawnTime: 1.5, despawnTime: 3.0 },
-            { left: 60, top: 12, spawnTime: 1.8, despawnTime: 3.3 },
-            { left: 62, top: 32, spawnTime: 2.1, despawnTime: 3.6 },
-            { left: 42, top: 30, spawnTime: 2.4, despawnTime: 3.9 },
-            { left: 50, top: 22, spawnTime: 2.7, despawnTime: 4.2 },
-            // clump 3
-            { left: 69, top: 15, spawnTime: 3.0, despawnTime: 4.5 },
-            { left: 90, top: 12, spawnTime: 3.3, despawnTime: 4.8 },
-            { left: 92, top: 32, spawnTime: 3.6, despawnTime: 5.1 },
-            { left: 72, top: 30, spawnTime: 3.9, despawnTime: 5.4 },
-            { left: 80, top: 22, spawnTime: 4.2, despawnTime: 5.7 },
-            // clump 4
-            { left: 69, top: 71, spawnTime: 4.5, despawnTime: 6.0 },
-            { left: 90, top: 68, spawnTime: 4.8, despawnTime: 6.3 },
-            { left: 92, top: 88, spawnTime: 5.1, despawnTime: 6.6 },
-            { left: 72, top: 86, spawnTime: 5.4, despawnTime: 6.9 },
-            { left: 80, top: 78, spawnTime: 5.7, despawnTime: 7.2 },
-            // clump 5
-            { left: 39, top: 71, spawnTime: 6.0, despawnTime: 7.5 },
-            { left: 60, top: 68, spawnTime: 6.3, despawnTime: 7.8 },
-            { left: 62, top: 88, spawnTime: 6.6, despawnTime: 8.1 },
-            { left: 42, top: 86, spawnTime: 6.9, despawnTime: 8.4 },
-            { left: 50, top: 78, spawnTime: 7.2, despawnTime: 8.7 },
-            // clump 6
-            { left: 9, top: 71, spawnTime: 7.5, despawnTime: 9.0 },
-            { left: 30, top: 68, spawnTime: 7.8, despawnTime: 9.3 },
-            { left: 32, top: 88, spawnTime: 8.1, despawnTime: 9.6 },
-            { left: 12, top: 86, spawnTime: 8.4, despawnTime: 9.9 },
-            { left: 20, top: 78, spawnTime: 8.7, despawnTime: 10.2 },
         ],
     },
 ];
