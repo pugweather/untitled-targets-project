@@ -1,10 +1,11 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, Fragment } from "react"
 import { useNavigate, useParams } from "react-router"
 import { RotateCw, Home, ArrowLeft } from "lucide-react"
 import type { Score, Target } from "../types"
 import styles from './Gameboard.module.css'
 import LeaderboardModal from "../components/LeaderboardModal"
 import { FadingTarget } from "../components/FadingTarget"
+import TargetRing from "../components/TargetRing"
 import { COURSES } from "../data/courses"
 
 type GameBoardProps = {
@@ -247,13 +248,15 @@ export default function GameBoard({mode}: GameBoardProps) {
                     <FadingTarget key={`${targ.left}-${targ.top}-${targ.spawnTime}`} target={targ} clicked={targ.clicked} mode={mode} onFadeEnd={() => handleFadeEnd(targ)}/>
                 )}
                 {visibleTargets.map((targ, idx) => (
-                    <div
-                        key={`${targ.left}-${targ.top}-${targ.spawnTime}`}
-                        className={`${styles.target} ${mode === "v1" ? styles[`step${idx}`] : ''}`}
-                        style={{ left: targ.left + '%', top: targ.top + '%' }}
-                        onMouseDown={() => clickTarget(idx)}
-                        // onTransitionEnd={exiting && idx === 0 ? (e) => handleFadeEnd(targ, e) : undefined}
-                    />
+                    <Fragment key={`${targ.left}-${targ.top}-${targ.spawnTime}`}>
+                        <div
+                            className={`${styles.target} ${mode === "v1" ? styles[`step${idx}`] : ''}`}
+                            style={{ left: targ.left + '%', top: targ.top + '%' }}
+                            onMouseDown={() => clickTarget(idx)}
+                            // onTransitionEnd={exiting && idx === 0 ? (e) => handleFadeEnd(targ, e) : undefined}
+                        />
+                        <TargetRing target={targ} />
+                    </Fragment>
                 ))}
                 {
                     (mode === "v1" && 

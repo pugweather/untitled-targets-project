@@ -1,0 +1,10 @@
+.ring {
+  position: absolute;
+  width: 5.5%;              /* same size as the target */
+  aspect-ratio: 1 / 1;
+  border-radius: 9px;
+  border: 2px solid rgba(255, 255, 255, 0.65);
+  box-shadow: none;
+  transform: translate(-50%, -50%) scale(3);  /* starting size: 3x */
+  pointer-events: none;
+}
