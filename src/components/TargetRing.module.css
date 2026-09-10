@@ -4,7 +4,12 @@
   aspect-ratio: 1 / 1;
   border-radius: 9px;
   border: 2px solid rgba(255, 255, 255, 0.65);
-  box-shadow: none;
+  box-shadow:
+    0 0 14px rgba(255, 255, 255, 0.20),
+    inset 0 0 10px rgba(255, 255, 255, 0.10);
+  background: radial-gradient(circle, transparent 45%, rgba(255, 255, 255, 0.06) 70%, transparent 100%);
   transform: translate(-50%, -50%) scale(3);  /* starting size: 3x */
   pointer-events: none;
+  transition: transform 0.1s linear;
+  will-change: transform;
 }

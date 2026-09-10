@@ -2,7 +2,8 @@ export type Target = {
     left: number,
     top: number,
     spawnTime?: number,
-    despawnTime?: number
+    despawnTime?: number,
+    hitTime?: number
 }
 
 export type HomeTarget = {
