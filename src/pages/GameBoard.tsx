@@ -244,7 +244,7 @@ export default function GameBoard({mode}: GameBoardProps) {
                         {countdown}
                     </div>
                 )}
-                {fadingTargets.map((targ) =>
+                {fadingTargets.map((targ, idx) =>
                     <FadingTarget key={`${targ.left}-${targ.top}-${targ.spawnTime}`} target={targ} clicked={targ.clicked} mode={mode} onFadeEnd={() => handleFadeEnd(targ)}/>
                 )}
                 {visibleTargets.map((targ, idx) => (
@@ -255,7 +255,7 @@ export default function GameBoard({mode}: GameBoardProps) {
                             onMouseDown={() => clickTarget(idx)}
                             // onTransitionEnd={exiting && idx === 0 ? (e) => handleFadeEnd(targ, e) : undefined}
                         >
-                            {mode === "v3" && <span className={styles.targetNumber}>1</span>}
+                            {mode === "v3" && <span className={styles.targetNumber}>{targ.position ?? ':)'}</span>}
                         </div>
                         <TargetRing target={targ} timer={timer} />
                     </Fragment>

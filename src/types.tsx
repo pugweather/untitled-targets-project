@@ -3,7 +3,8 @@ export type Target = {
     top: number,
     spawnTime?: number,
     despawnTime?: number,
-    hitTime?: number
+    hitTime?: number,
+    position?: number
 }
 
 export type HomeTarget = {
@@ -28,6 +29,7 @@ export type Course = {
     title: string,
     difficulty: number,
     image: string,
+    supportsV3?: boolean,
     targets: Target[]
 }
 

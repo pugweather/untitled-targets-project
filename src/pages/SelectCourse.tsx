@@ -75,6 +75,7 @@ export default function SelectCourse() {
                                         </button>
                                         <button 
                                             className={styles.playButton} 
+                                            disabled={!course.supportsV3}
                                             onClick={(e) => {
                                                 e.stopPropagation()
                                                 navigate(`/game/v3/${course.courseId}`)
