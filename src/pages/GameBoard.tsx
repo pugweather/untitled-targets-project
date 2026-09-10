@@ -244,7 +244,7 @@ export default function GameBoard({mode}: GameBoardProps) {
                         {countdown}
                     </div>
                 )}
-                {fadingTargets.map((targ, idx) =>
+                {fadingTargets.map((targ) =>
                     <FadingTarget key={`${targ.left}-${targ.top}-${targ.spawnTime}`} target={targ} clicked={targ.clicked} mode={mode} onFadeEnd={() => handleFadeEnd(targ)}/>
                 )}
                 {visibleTargets.map((targ, idx) => (
