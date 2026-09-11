@@ -264,7 +264,7 @@ export default function GameBoard({mode}: GameBoardProps) {
                 {visibleTargets.map((targ, idx) => (
                     <Fragment key={`${targ.left}-${targ.top}-${targ.spawnTime}`}>
                         <div
-                            className={`${mode === "v3" ? styles.targetV3 : styles.target} ${mode === "v1" ? styles[`step${idx}`] : ''}`}
+                            className={`${mode === "v3" ? styles.targetV3 : styles.target} ${mode === "v3" && targ.hitTime !== undefined && timer > targ.hitTime ? styles.aboutToDespawn : '' } ${mode === "v1" ? styles[`step${idx}`] : ''}`}
                             style={{ left: targ.left + '%', top: targ.top + '%' }}
                             onMouseDown={() => clickTarget(idx)}
                             // onTransitionEnd={exiting && idx === 0 ? (e) => handleFadeEnd(targ, e) : undefined}
