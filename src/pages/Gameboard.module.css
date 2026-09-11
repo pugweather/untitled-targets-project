@@ -121,8 +121,32 @@
   box-shadow: 0 0 16px 4px currentColor;
 }
 
+.fadingTargetVisualV3 {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 9px;
+  background: radial-gradient(circle at 30% 30%, #24384a 0%, #0f1a25 100%);
+  border: 2px solid #82f5d2;
+  box-shadow:
+    0 0 12px rgba(130, 245, 210, 0.35),
+    inset 0 0 8px rgba(130, 245, 210, 0.15);
+  color: #ffffff;
+  /* animation: spawnIn 0.2s ease-out; */
+}
+
 .fadingTargetVisual.pop {
   animation: pop 0.2s ease-in forwards;
+}
+
+.fadingTargetVisualV3.pop {
+  animation: pop 0.2s ease-in forwards;
+}
+
+.fadingTargetVisualV3.miss {
+  animation: miss 0.25s ease-out forwards;
 }
 
 @keyframes pop {

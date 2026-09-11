@@ -99,6 +99,19 @@ export default function GameBoard({mode}: GameBoardProps) {
             setPlayedIndices(newPlayedIndices)
         }
 
+        if (mode === "v3") {
+            const newPlayedIndices = new Set(playedIndices)
+            targets.forEach((t, idx) => {
+                if (t.despawnTime !== undefined && timer >= t.despawnTime) {
+                    if (!newPlayedIndices.has(idx)) {
+                        newPlayedIndices.add(idx)
+                        setFadingTargets(prev => prev.some(existing => t === existing) ? [...prev] : [...prev, {...t, clicked: false}])
+                    }
+                }
+            })
+            setPlayedIndices(newPlayedIndices)
+        }
+
         return () => clearTimeout(t)
 
     }, [isPlaying, timer])
@@ -107,6 +120,7 @@ export default function GameBoard({mode}: GameBoardProps) {
 
         // Only be able to click first targ in array WHILE playing
         if (!isPlaying) return
+        // For v1, only allowed to click 1st target in array
         if (mode === "v1" && idx !== 0) return
         
         if (mode === "v1") {

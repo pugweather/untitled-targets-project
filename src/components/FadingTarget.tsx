@@ -72,11 +72,13 @@ export function FadingTarget({target, mode, clicked, onFadeEnd}: FadingTargetPro
         }
     }, [])
 
-    return(
+    return (
         <div ref={containerRef} className={styles.fadingTargetContainer} style={{ left: target.left + '%', top: target.top + '%' }}>
             <div
-                className={`${styles.fadingTargetVisual} ${mode === "v1" ? styles.step0 : ''} ${isExiting ? clicked ? styles.pop : styles.miss : ''}`}
-            />
+                className={`${mode === "v3" ? styles.fadingTargetVisualV3 : styles.fadingTargetVisual} ${mode === "v1" ? styles.step0 : ''} ${isExiting ? clicked ? styles.pop : styles.miss : ''}`}
+            >
+                {mode === "v3" && <span className={styles.targetNumber}>{target.position ?? ':)'}</span>}
+            </div>
             {clicked && Array.from({ length: FRAGMENT_COUNT }, (_, i) => <CrumbleFragment key={i} />)}
         </div>
     )
