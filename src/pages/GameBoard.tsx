@@ -14,13 +14,6 @@ type GameBoardProps = {
 
 type FadingTarget = Target & { clicked: boolean }
 
-// TODO for v3:
-// Use ring to indicate when to tap target. When ring reaches target border, click target. prob
-// add few hundred ms of leeway where target can stil be clicked after ring touches border.
-// Add hitTime property to targets that represents optimal time to click target (i.e. moment ring touches target border)
-// Initially the ring will be 2-3x the size of the target. I think we can use css scale property to handle this. Should have a progress calculation
-// that uses spawn / despawn / hit times to calc progress. Progress scales from 0 -> 1 and progress changes the scale from 3 -> ~1
-
 export default function GameBoard({mode}: GameBoardProps) {
     const NUM_TARGETS_TO_SHOW = 5
     const INITIAL_COUNTDOWN = 3
@@ -29,9 +22,7 @@ export default function GameBoard({mode}: GameBoardProps) {
 
     const course = COURSES.find(c => c.courseId === Number(courseId))
     // Terminate if course not found
-    // TODO: send back to course select screen or something?
     if (!course) return
-    // const course = COURSES[0]
 
     const {targets} = course
 
@@ -42,7 +33,13 @@ export default function GameBoard({mode}: GameBoardProps) {
     const [isPlaying, setIsPlaying] = useState(false)
     const [timer, setTimer] = useState<number>(0)
 
-    // Target visibility
+    // Current timer
+    const minutes = Math.floor(timer / 60)
+    const seconds = Math.floor(timer % 60)
+    const tenths = Math.round((timer % 1) * 10)
+    const timerText = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}.${String(tenths).padEnd(2, '0')}`
+
+    /* Target visibility */
 
     // V1
     const [targetsRange, setTargetsRange] = useState([0, NUM_TARGETS_TO_SHOW])
@@ -62,11 +59,6 @@ export default function GameBoard({mode}: GameBoardProps) {
     const [fadingTargets, setFadingTargets] = useState<FadingTarget[]>([])
     const [recentScore, setRecentScore] = useState<string | null>(null)
 
-    // Current timer
-    const minutes = Math.floor(timer / 60)
-    const seconds = Math.floor(timer % 60)
-    const tenths = Math.round((timer % 1) * 10)
-    const timerText = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}.${String(tenths).padEnd(2, '0')}`
 
     // Modal state
     const [showLeaderboard, setShowLeaderboard] = useState(false)
@@ -131,7 +123,7 @@ export default function GameBoard({mode}: GameBoardProps) {
 
         const clickedTarg = visibleTargets[idx]
         if (clickedTarg) {
-            if (mode === "v2") {
+            if (mode === "v2" || mode === "v3") {
                 const clickedIdx = targets.findIndex(t => t === clickedTarg)
                 setClickedTargets(prev => new Set([...prev, clickedIdx]))
                 if (clickedIdx !== -1) {
@@ -171,25 +163,42 @@ export default function GameBoard({mode}: GameBoardProps) {
             const date = `${now.getMonth() + 1}/${now.getDate()}/${now.getFullYear()}`
 
             const scores = JSON.parse(localStorage.getItem(key) || '[]') as Score[]
-            const newScore: Score = mode === "v1" ?
-                {
+
+            let newScore: Score
+            if (mode === "v1") {
+                newScore = {
                     mode: "v1",
                     date,
                     time: timerText,
                     rawTime: timer
                 } 
-                :
-                {
+
+            } else if (mode === "v2") {
+                newScore = {
                     mode: "v2",
                     date,
                     score: clickedTargets.size,
                 }
+            } else if (mode === "v3") {
+                // TODO: update to support score?
+                newScore = {
+                    mode: "v3",
+                    date,
+                    score: clickedTargets.size,
+                }
+            } else {
+                throw new Error("Unexpected mode: " + mode)
+            }
+
             scores.push(newScore)
 
             if (mode === "v1") {
                 scores.sort((a,b) => a.mode === "v1" && b.mode === "v1" ? a.rawTime - b.rawTime : 0)
             } else if (mode === "v2") {
                 scores.sort((a,b) => a.mode === "v2" && b.mode === "v2" ? b.score - a.score : 0)
+            } else if (mode === "v3") {
+                // TODO: eventually update to points based on click timing
+                scores.sort((a,b) => a.mode === "v3" && b.mode === "v3" ? b.score - a.score : 0)
             }
             localStorage.setItem(key, JSON.stringify(scores))
 
@@ -227,14 +236,14 @@ export default function GameBoard({mode}: GameBoardProps) {
     }
 
     function getRecentScore() {
-        switch(mode) {
-            case "v1":
-                return timerText
-            case "v2":
-                return clickedTargets.size + ' / ' + targets.length
-            default:
-                return "N/A"
+        console.log(mode)
+        console.log(clickedTargets.size + ' / ' + targets.length)
+        if (mode === "v1") {
+            return timerText
+        } else if (mode === "v2" || mode === "v3") {
+            return clickedTargets.size + ' / ' + targets.length
         }
+        return "N/A"
     }
 
     return (
@@ -271,7 +280,7 @@ export default function GameBoard({mode}: GameBoardProps) {
                         >
                             {mode === "v3" && <span className={styles.targetNumber}>{targ.position ?? ':)'}</span>}
                         </div>
-                        <TargetRing target={targ} timer={timer} />
+                       {mode === "v3" && <TargetRing target={targ} timer={timer} />}
                     </Fragment>
                 ))}
                 {

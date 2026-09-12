@@ -73,7 +73,7 @@ export function FadingTarget({target, mode, clicked, onFadeEnd}: FadingTargetPro
     }, [])
 
     return (
-        <div ref={containerRef} className={styles.fadingTargetContainer} style={{ left: target.left + '%', top: target.top + '%' }}>
+        <div ref={containerRef} className={`${styles.fadingTargetContainer} ${mode === "v3" ? styles.fadingTargetContainerV3 : ''}`} style={{ left: target.left + '%', top: target.top + '%' }}>
             <div
                 className={`${mode === "v3" ? styles.fadingTargetVisualV3 : styles.fadingTargetVisual} ${mode === "v1" ? styles.step0 : ''} ${isExiting ? clicked ? styles.pop : styles.miss : ''}`}
             >
