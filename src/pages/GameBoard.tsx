@@ -12,10 +12,11 @@ type GameBoardProps = {
     mode: string
 }
 
-type FadingTarget = Target & { clicked: boolean }
+type FadingTarget = Target & { clicked: boolean, feedback?: string }
 
 export default function GameBoard({mode}: GameBoardProps) {
     const NUM_TARGETS_TO_SHOW = 5
+    const OPTIMAL_CLICK_TIME = 0.2
     const INITIAL_COUNTDOWN = 3
 
     const {courseId} = useParams()
@@ -48,7 +49,10 @@ export default function GameBoard({mode}: GameBoardProps) {
     // V2
     const [playedIndices, setPlayedIndices] = useState(new Set())
     const [clickedTargets, setClickedTargets] = useState(new Set())
-    const alreadyFinished = useRef(false)
+    const alreadyFinished = useRef<boolean>(false)
+
+    // V3
+    const timeOfGameStart = useRef<number | null>(null)
 
     // Shared Version state
     const visibleTargets = mode === "v1" ? 
@@ -59,13 +63,17 @@ export default function GameBoard({mode}: GameBoardProps) {
     const [fadingTargets, setFadingTargets] = useState<FadingTarget[]>([])
     const [recentScore, setRecentScore] = useState<string | null>(null)
 
+    console.log(fadingTargets)
+
 
     // Modal state
     const [showLeaderboard, setShowLeaderboard] = useState(false)
 
     useEffect(() => {
         if (countdown === null || countdown <= 0) {
-            if (countdown === 0) setIsPlaying(true)
+            if (countdown === 0) {
+                setIsPlaying(true)
+            }
             return
         }
         const t = setTimeout(() => setCountdown(countdown - 1), 1000)
@@ -74,6 +82,12 @@ export default function GameBoard({mode}: GameBoardProps) {
 
     useEffect(() => {
         if (!isPlaying) return
+
+        if (timeOfGameStart.current === null) {
+            // Store timestamp of game start so that we can assess if a target's click time is GOOD vs PERFECT
+            // basically if the timestamp of the target click is within 200ms of the hit time it will be perfect, otherwise if it will be GOOD if before despawn
+            timeOfGameStart.current = performance.now() / 1000
+        }
 
         const newTime = timer + 0.1
         const t = setTimeout(() => setTimer(newTime), 100)
@@ -121,20 +135,36 @@ export default function GameBoard({mode}: GameBoardProps) {
             setTargetsRange([nextTargToClick, lastTargInRange])
         }
 
-        const clickedTarg = visibleTargets[idx]
+        const clickedTarg: Target | undefined = visibleTargets[idx]
         if (clickedTarg) {
             if (mode === "v2" || mode === "v3") {
                 const clickedIdx = targets.findIndex(t => t === clickedTarg)
-                setClickedTargets(prev => new Set([...prev, clickedIdx]))
                 if (clickedIdx !== -1) {
                     const newPlayedIndices = new Set(playedIndices)
                     newPlayedIndices.add(clickedIdx)
                     setPlayedIndices(newPlayedIndices)
+                    setClickedTargets(prev => new Set([...prev, clickedIdx]))
                 } else {
                     console.log("BUG??? click on targ: " + JSON.stringify(clickedTarg) + " didn't register")
                 }
             }
-            setFadingTargets(prev => prev.some(t => t === clickedTarg) ? [...prev] : [...prev, {...clickedTarg, clicked: true}])
+
+            let feedback: string | undefined
+            if (mode === "v3") {
+                if (clickedTarg.hitTime === undefined || clickedTarg.despawnTime === undefined || timeOfGameStart.current === null) {
+                    throw new Error("ERROR: either timeOfGameStart is null, OR target at index " + idx + " requires hit time and despawn time")
+                }
+                const currClickTime = (performance.now() / 1000) - (timeOfGameStart.current)
+                const distanceFromHitTime = Math.abs((clickedTarg.hitTime - currClickTime))
+                
+                if (distanceFromHitTime <= OPTIMAL_CLICK_TIME) {
+                    feedback = "PERFECT"
+                } else {
+                    feedback = "GOOD"
+                }
+                console.log(feedback)
+            }
+            setFadingTargets(prev => prev.some(t => t === clickedTarg) ? [...prev] : [...prev, {...clickedTarg, clicked: true, feedback: feedback}])
         } else {
             console.error("Not able to fade out clicked targ???? BUG!?!?")
         }
@@ -232,12 +262,11 @@ export default function GameBoard({mode}: GameBoardProps) {
         setPlayedIndices(new Set())
         setClickedTargets(new Set())
         setRecentScore(null)
+        timeOfGameStart.current = null
         alreadyFinished.current = false
     }
 
     function getRecentScore() {
-        console.log(mode)
-        console.log(clickedTargets.size + ' / ' + targets.length)
         if (mode === "v1") {
             return timerText
         } else if (mode === "v2" || mode === "v3") {
@@ -268,7 +297,7 @@ export default function GameBoard({mode}: GameBoardProps) {
                     </div>
                 )}
                 {fadingTargets.map((targ) =>
-                    <FadingTarget key={`${targ.left}-${targ.top}-${targ.spawnTime}`} target={targ} clicked={targ.clicked} mode={mode} onFadeEnd={() => handleFadeEnd(targ)}/>
+                    <FadingTarget key={`${targ.left}-${targ.top}-${targ.spawnTime}`} target={targ} clicked={targ.clicked} feedback={targ.feedback} mode={mode} onFadeEnd={() => handleFadeEnd(targ)}/>
                 )}
                 {visibleTargets.map((targ, idx) => (
                     <Fragment key={`${targ.left}-${targ.top}-${targ.spawnTime}`}>

@@ -1,12 +1,13 @@
 import { useState, useEffect, useRef } from "react"
 import type { Target } from "../types"
-import styles from "../pages/Gameboard.module.css"
+import styles from "./FadingTarget.module.css"
 import anime from "animejs"
 
 type FadingTargetProps = {
     target: Target,
     mode: string,
     clicked: boolean,
+    feedback?: string,
     onFadeEnd: (target: Target) => void
 }
 
@@ -16,7 +17,7 @@ function CrumbleFragment() {
     return <div className={styles.crumbleFragment} style={{ left: '50%', top: '50%', backgroundColor: 'currentColor' }} />
 }
 
-export function FadingTarget({target, mode, clicked, onFadeEnd}: FadingTargetProps) {
+export function FadingTarget({target, mode, clicked, feedback, onFadeEnd}: FadingTargetProps) {
 
     // These are settimoeut durations that represent same amount of time as it takes for animation to run
     // onFadeEnd will be called when setTimeout callback runs
@@ -74,6 +75,9 @@ export function FadingTarget({target, mode, clicked, onFadeEnd}: FadingTargetPro
 
     return (
         <div ref={containerRef} className={`${styles.fadingTargetContainer} ${mode === "v3" ? styles.fadingTargetContainerV3 : ''}`} style={{ left: target.left + '%', top: target.top + '%' }}>
+            <div className={`${styles.fadingTargetText} ${feedback ? (feedback === "PERFECT" ? styles.perfect : styles.good) : ''}`}>
+                {feedback ? (feedback === "PERFECT" ? "PERFECT" : "GOOD") : ''}
+            </div>
             <div
                 className={`${mode === "v3" ? styles.fadingTargetVisualV3 : styles.fadingTargetVisual} ${mode === "v1" ? styles.step0 : ''} ${isExiting ? clicked ? styles.pop : styles.miss : ''}`}
             >

@@ -1,0 +1,146 @@
+.fadingTarget {
+  position: absolute;
+  width: 5.5%;
+  aspect-ratio: 1 / 1;
+  border-radius: 9px;
+  transform: translate(-50%, -50%) scale(var(--scale, 1));
+  /* cursor: pointer; */
+  color: color-mix(in srgb, red, blue var(--mix, 0%));
+  background: color-mix(in srgb, red, blue var(--mix, 0%));
+  box-shadow: 0 0 16px 4px currentColor;
+  z-index: 1;
+  transition:
+    opacity 0.2s ease-out,
+    transform 0.2s ease-out,
+    filter 0.2s ease-out;
+}
+
+/* Pop / crumble animation classes -- used by FadingTarget once the TODOs are wired up */
+.fadingTargetContainer {
+  position: absolute;
+  width: 5.5%;
+  aspect-ratio: 1 / 1;
+  transform: translate(-50%, -50%) scale(var(--scale, 1));
+  pointer-events: none;
+  z-index: 1;
+  color: color-mix(in srgb, red, blue var(--mix, 0%));
+  border-radius: 9px;
+}
+
+.fadingTargetContainerV3 {
+  color: #82f5d2;
+}
+
+.fadingTargetVisual {
+  position: absolute;
+  inset: 0;
+  border-radius: 9px;
+  background: currentColor;
+  box-shadow: 0 0 16px 4px currentColor;
+}
+
+.fadingTargetVisualV3 {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 9px;
+  background: radial-gradient(circle at 30% 30%, #24384a 0%, #0f1a25 100%);
+  border: 2px solid #82f5d2;
+  box-shadow:
+    0 0 12px rgba(130, 245, 210, 0.35),
+    inset 0 0 8px rgba(130, 245, 210, 0.15);
+  color: #ffffff;
+}
+
+.fadingTargetVisual.pop {
+  animation: pop 0.2s ease-in forwards;
+}
+
+.fadingTargetVisualV3.pop {
+  animation: pop 0.2s ease-in forwards;
+}
+
+.fadingTargetVisualV3.miss {
+  background: radial-gradient(circle at 30% 30%, #4a2430 0%, #250f15 100%);
+  border-color: #f58282;
+  box-shadow:
+    0 0 16px rgba(245, 130, 130, 0.5),
+    inset 0 0 10px rgba(245, 130, 130, 0.2);
+  animation: miss 0.25s ease-out forwards;
+}
+
+.fadingTargetVisualV3.miss .targetNumber {
+  color: #ffdcdc;
+  text-shadow: 0 0 4px rgba(245, 130, 130, 0.8);
+  display: inline-block;
+  animation: shake 0.3s ease-in-out;
+}
+
+.fadingTargetVisual.miss {
+  animation: miss 0.25s ease-out forwards;
+}
+
+.fadingTargetText {
+
+    position: absolute;
+    right: -2rem;
+    top: -1rem;
+}
+
+.fadingTargetText.perfect {
+    color: rgb(109, 254, 109);
+    font-size: 1.5rem;
+}
+
+.fadingTargetText.good {
+    color: rgb(14, 130, 253);
+    font-size: 1.5rem;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  15% { transform: translateX(-4px) rotate(-4deg); }
+  30% { transform: translateX(4px) rotate(4deg); }
+  45% { transform: translateX(-4px) rotate(-4deg); }
+  60% { transform: translateX(4px) rotate(4deg); }
+  75% { transform: translateX(-2px) rotate(-2deg); }
+  90% { transform: translateX(2px) rotate(2deg); }
+}
+
+@keyframes pop {
+  0% {
+    opacity: 1;
+    transform: scale(1.25) rotate(360deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes miss {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.75);
+    filter: brightness(0.5);
+  }
+}
+
+.crumbleFragment {
+  position: absolute;
+  width: 0.4rem;
+  height: 0.4rem;
+  margin-left: -0.2rem;
+  margin-top: -0.2rem;
+  border-radius: 2px;
+  box-shadow: 0 0 4px 1px currentColor;
+  pointer-events: none;
+  z-index: 0;
+}
