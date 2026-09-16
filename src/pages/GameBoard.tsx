@@ -63,9 +63,6 @@ export default function GameBoard({mode}: GameBoardProps) {
     const [fadingTargets, setFadingTargets] = useState<FadingTarget[]>([])
     const [recentScore, setRecentScore] = useState<string | null>(null)
 
-    console.log(fadingTargets)
-
-
     // Modal state
     const [showLeaderboard, setShowLeaderboard] = useState(false)
 
@@ -98,7 +95,9 @@ export default function GameBoard({mode}: GameBoardProps) {
                 if (t.despawnTime !== undefined && timer >= t.despawnTime) {
                     if (!newPlayedIndices.has(idx)) {
                         newPlayedIndices.add(idx)
-                        setFadingTargets(prev => prev.some(existing => t === existing) ? [...prev] : [...prev, {...t, clicked: false}])
+                        setFadingTargets(prev => prev.some(existing => t.left === existing.left && t.top === existing.top && t.spawnTime === existing.spawnTime) ? 
+                        [...prev] : 
+                        [...prev, {...t, clicked: false}])
                     }
                 }
             })
@@ -122,7 +121,7 @@ export default function GameBoard({mode}: GameBoardProps) {
 
     }, [isPlaying, timer])
 
-    function clickTarget(idx: number) {
+    function clickTarget(clickedTarg: Target, idx: number) {
 
         // Only be able to click first targ in array WHILE playing
         if (!isPlaying) return
@@ -135,7 +134,7 @@ export default function GameBoard({mode}: GameBoardProps) {
             setTargetsRange([nextTargToClick, lastTargInRange])
         }
 
-        const clickedTarg: Target | undefined = visibleTargets[idx]
+        // const clickedTarg: Target | undefined = visibleTargets[idx]
         if (clickedTarg) {
             if (mode === "v2" || mode === "v3") {
                 const clickedIdx = targets.findIndex(t => t === clickedTarg)
@@ -162,9 +161,13 @@ export default function GameBoard({mode}: GameBoardProps) {
                 } else {
                     feedback = "GOOD"
                 }
-                console.log(feedback)
             }
-            setFadingTargets(prev => prev.some(t => t === clickedTarg) ? [...prev] : [...prev, {...clickedTarg, clicked: true, feedback: feedback}])
+            setFadingTargets(prev => prev.some(t => 
+                t.left === clickedTarg.left && 
+                t.top === clickedTarg.top && 
+                t.spawnTime === clickedTarg.spawnTime) ? 
+                [...prev] :
+                [...prev, {...clickedTarg, clicked: true, feedback: feedback}])
         } else {
             console.error("Not able to fade out clicked targ???? BUG!?!?")
         }
@@ -304,7 +307,7 @@ export default function GameBoard({mode}: GameBoardProps) {
                         <div
                             className={`${mode === "v3" ? styles.targetV3 : styles.target} ${mode === "v3" && targ.hitTime !== undefined && timer > targ.hitTime ? styles.aboutToDespawn : '' } ${mode === "v1" ? styles[`step${idx}`] : ''}`}
                             style={{ left: targ.left + '%', top: targ.top + '%' }}
-                            onMouseDown={() => clickTarget(idx)}
+                            onMouseDown={() => clickTarget(targ, idx)}
                             // onTransitionEnd={exiting && idx === 0 ? (e) => handleFadeEnd(targ, e) : undefined}
                         >
                             {mode === "v3" && <span className={styles.targetNumber}>{targ.position ?? ':)'}</span>}
