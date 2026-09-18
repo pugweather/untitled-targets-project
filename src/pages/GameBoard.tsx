@@ -16,7 +16,7 @@ type FadingTarget = Target & { clicked: boolean, feedback?: string }
 
 export default function GameBoard({mode}: GameBoardProps) {
     const NUM_TARGETS_TO_SHOW = 5
-    const OPTIMAL_CLICK_TIME = 0.2
+    const OPTIMAL_CLICK_TIME = 0.125
     const INITIAL_COUNTDOWN = 3
 
     const {courseId} = useParams()
@@ -83,11 +83,14 @@ export default function GameBoard({mode}: GameBoardProps) {
         if (timeOfGameStart.current === null) {
             // Store timestamp of game start so that we can assess if a target's click time is GOOD vs PERFECT
             // basically if the timestamp of the target click is within 200ms of the hit time it will be perfect, otherwise if it will be GOOD if before despawn
-            timeOfGameStart.current = performance.now() / 1000
+            timeOfGameStart.current = performance.now() / 1000 - timer
         }
 
         const newTime = timer + 0.1
-        const t = setTimeout(() => setTimer(newTime), 100)
+        const t = setTimeout(function() {
+            timeOfGameStart.current = performance.now() / 1000 - timer
+            setTimer(newTime)
+        }, 100)
 
         if (mode === "v2") {
             const newPlayedIndices = new Set(playedIndices)
@@ -153,13 +156,23 @@ export default function GameBoard({mode}: GameBoardProps) {
                 if (clickedTarg.hitTime === undefined || clickedTarg.despawnTime === undefined || timeOfGameStart.current === null) {
                     throw new Error("ERROR: either timeOfGameStart is null, OR target at index " + idx + " requires hit time and despawn time")
                 }
-                const currClickTime = (performance.now() / 1000) - (timeOfGameStart.current)
-                const distanceFromHitTime = Math.abs((clickedTarg.hitTime - currClickTime))
-                
-                if (distanceFromHitTime <= OPTIMAL_CLICK_TIME) {
-                    feedback = "PERFECT"
+
+                const fraction = ((performance.now() / 1000) - timeOfGameStart.current) - timer
+                const currClickTime = timer + fraction
+                const distanceFromHitTime = Math.abs(currClickTime - clickedTarg.hitTime)
+
+                if (currClickTime > clickedTarg.hitTime) {
+                    if (distanceFromHitTime <= 0.1) {
+                        feedback = "PERFECT"
+                    } else {
+                        feedback = "GOOD"
+                    }
                 } else {
-                    feedback = "GOOD"
+                    if (distanceFromHitTime <= OPTIMAL_CLICK_TIME) {
+                        feedback = "PERFECT"
+                    } else {
+                        feedback = "GOOD"
+                    }
                 }
             }
             setFadingTargets(prev => prev.some(t => 
