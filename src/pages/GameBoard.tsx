@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, Fragment } from "react"
 import { useNavigate, useParams } from "react-router"
-import { RotateCw, Home, ArrowLeft } from "lucide-react"
+import { RotateCw, Home, ArrowLeft, Crosshair } from "lucide-react"
 import type { Score, Target } from "../types"
 import styles from './Gameboard.module.css'
 import LeaderboardModal from "../components/LeaderboardModal"
@@ -45,6 +45,7 @@ export default function GameBoard({mode}: GameBoardProps) {
     // V1
     const [targetsRange, setTargetsRange] = useState([0, NUM_TARGETS_TO_SHOW])
     const [firstTargIdx, lastTargIdx] = targetsRange
+    const [v3Score, setV3Score] = useState(0)
 
     // V2
     const [playedIndices, setPlayedIndices] = useState(new Set())
@@ -174,6 +175,7 @@ export default function GameBoard({mode}: GameBoardProps) {
                         feedback = "GOOD"
                     }
                 }
+                setV3Score(prev => feedback === "PERFECT" ? prev + 100 : prev + 70)
             }
             setFadingTargets(prev => prev.some(t => 
                 t.left === clickedTarg.left && 
@@ -278,6 +280,7 @@ export default function GameBoard({mode}: GameBoardProps) {
         setPlayedIndices(new Set())
         setClickedTargets(new Set())
         setRecentScore(null)
+        setV3Score(0)
         timeOfGameStart.current = null
         alreadyFinished.current = false
     }
@@ -302,6 +305,12 @@ export default function GameBoard({mode}: GameBoardProps) {
                 <button className={styles.actionButton} onClick={playGame}>
                     <RotateCw className={styles.actionIcon} strokeWidth={2.5} />
                 </button>
+                {mode === "v3" && (
+                    <div className={styles.scoreDisplay}>
+                        <Crosshair className={styles.scoreIcon} strokeWidth={2.5} />
+                        <span className={styles.scoreValue}>{v3Score}</span>
+                    </div>
+                )}
                 <button className={`${styles.actionButton} ${styles.homeButton}`} onClick={() => navigate("/")}>
                     <Home className={styles.actionIcon} strokeWidth={2.5} />
                 </button>
