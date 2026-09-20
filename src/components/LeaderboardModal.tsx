@@ -6,7 +6,7 @@ import styles from './LeaderboardModal.module.css'
 
 type LeaderboardModalProps = {
     course: Course,
-    recentScore: string | null,
+    recentScore: string | number | null,
     mode: string,
     onClose: () => void,
     onRestart: () => void
