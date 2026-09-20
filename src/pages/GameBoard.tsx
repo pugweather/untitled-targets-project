@@ -62,7 +62,7 @@ export default function GameBoard({mode}: GameBoardProps) {
     // Separate targets that are fading out after being tapped
     // so that we can advance the new range instantly (previously needed to wait for animation to end before tapping next target)
     const [fadingTargets, setFadingTargets] = useState<FadingTarget[]>([])
-    const [recentScore, setRecentScore] = useState<string | null>(null)
+    const [recentScore, setRecentScore] = useState<string | number | null>(null)
 
     // Modal state
     const [showLeaderboard, setShowLeaderboard] = useState(false)
@@ -232,7 +232,7 @@ export default function GameBoard({mode}: GameBoardProps) {
                 newScore = {
                     mode: "v3",
                     date,
-                    score: clickedTargets.size,
+                    score: v3Score,
                 }
             } else {
                 throw new Error("Unexpected mode: " + mode)
@@ -288,8 +288,10 @@ export default function GameBoard({mode}: GameBoardProps) {
     function getRecentScore() {
         if (mode === "v1") {
             return timerText
-        } else if (mode === "v2" || mode === "v3") {
+        } else if (mode === "v2") {
             return clickedTargets.size + ' / ' + targets.length
+        } else if (mode === "v3") {
+            return v3Score
         }
         return "N/A"
     }
