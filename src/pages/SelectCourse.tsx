@@ -81,7 +81,7 @@ export default function SelectCourse() {
                                                 navigate(`/game/v3/${course.courseId}`)
                                             }}
                                         >
-                                            Play v3 (in progress buggy af)
+                                            Play v3
                                         </button>
                                     </div>
                                 </div>

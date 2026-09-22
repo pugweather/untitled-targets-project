@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, Fragment } from "react"
 import { useNavigate, useParams } from "react-router"
-import { RotateCw, Home, ArrowLeft, Crosshair } from "lucide-react"
+import { RotateCw, Home, ArrowLeft, Crosshair, Trophy } from "lucide-react"
 import type { Score, Target } from "../types"
 import styles from './Gameboard.module.css'
 import LeaderboardModal from "../components/LeaderboardModal"
@@ -307,9 +307,15 @@ export default function GameBoard({mode}: GameBoardProps) {
                 <button className={styles.actionButton} onClick={playGame}>
                     <RotateCw className={styles.actionIcon} strokeWidth={2.5} />
                 </button>
-                {mode === "v3" && (
+                {mode === "v2" && (
                     <div className={styles.scoreDisplay}>
                         <Crosshair className={styles.scoreIcon} strokeWidth={2.5} />
+                        <span className={styles.scoreValue}>{clickedTargets.size}</span>
+                    </div>
+                )}
+                {mode === "v3" && (
+                    <div className={styles.scoreDisplay}>
+                        <Trophy className={styles.scoreIcon} strokeWidth={2.5} />
                         <span className={styles.scoreValue}>{v3Score}</span>
                     </div>
                 )}
