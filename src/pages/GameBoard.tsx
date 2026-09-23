@@ -298,7 +298,7 @@ export default function GameBoard({mode}: GameBoardProps) {
 
     return (
         <div className={styles.page}>
-            {showLeaderboard && <LeaderboardModal recentScore={recentScore} course={course} mode={mode} onRestart={playGame} onClose={() => setShowLeaderboard(false)}/>}
+            {showLeaderboard && <LeaderboardModal currScreen={"game"} recentScore={recentScore} course={course} mode={mode} onRestart={playGame} onClose={() => setShowLeaderboard(false)}/>}
             <div className={styles.topButtonsWrapper}>
                 <button className={`${styles.actionButton} ${styles.backButton}`} onClick={() => navigate(-1)}>
                     <ArrowLeft className={styles.actionIcon} strokeWidth={2.5} />

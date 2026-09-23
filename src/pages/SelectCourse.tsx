@@ -84,7 +84,7 @@ export default function SelectCourse() {
                                     </div>
                                 </div>
                                 {showLeaderboardCourseId === course.courseId && (
-                                    <LeaderboardModal course={course} mode={mode} onClose={() => setShowLeaderboardCourseId(null)}/>
+                                    <LeaderboardModal currScreen="select-course" course={course} mode={mode} onClose={() => setShowLeaderboardCourseId(null)}/>
                                 )}
                             </Fragment>
                         )

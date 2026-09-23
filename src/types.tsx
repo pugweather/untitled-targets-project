@@ -29,7 +29,6 @@ export type Course = {
     title: string,
     difficulty: number,
     image: string,
-    supportsRhythmMode?: boolean,
     targets: Target[]
 }
 

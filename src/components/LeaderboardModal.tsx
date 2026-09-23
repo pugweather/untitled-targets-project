@@ -6,6 +6,7 @@ import type { Course, Score } from "../types"
 import styles from './LeaderboardModal.module.css'
 
 type LeaderboardModalProps = {
+    currScreen?: string,
     course: Course,
     recentScore?: string | number | null,
     mode: string,
@@ -13,7 +14,7 @@ type LeaderboardModalProps = {
     onRestart?: () => void
 }
 
-export default function LeaderboardModal({course, recentScore, mode, onRestart, onClose}: LeaderboardModalProps) {
+export default function LeaderboardModal({currScreen, course, recentScore, mode, onRestart, onClose}: LeaderboardModalProps) {
     const node = document.getElementById("modal")
     if (!node) return null
 
@@ -74,13 +75,16 @@ export default function LeaderboardModal({course, recentScore, mode, onRestart, 
                     <button className={styles.actionButton} onClick={onClose}>
                         <X className={styles.actionIcon} strokeWidth={2.5} />
                     </button>
-                    <button className={styles.actionButton} onClick={() => navigate("/")}>
-                        <Home className={styles.actionIcon} strokeWidth={2.5} />
-                    </button>
-                    
-                    <button className={styles.actionButton} onClick={onRestart}>
-                        <RotateCw className={styles.actionIcon} strokeWidth={2.5} />
-                    </button>
+                   {currScreen === "game" && ( 
+                    <>
+                        <button className={styles.actionButton} onClick={() => navigate("/")}>
+                            <Home className={styles.actionIcon} strokeWidth={2.5} />
+                        </button>
+                        <button className={styles.actionButton} onClick={onRestart}>
+                            <RotateCw className={styles.actionIcon} strokeWidth={2.5} />
+                        </button>
+                    </>
+                    )}
                 </div>
             </div>
         </div>
