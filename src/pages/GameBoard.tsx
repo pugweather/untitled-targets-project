@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, Fragment } from "react"
 import { useNavigate, useParams } from "react-router"
-import { RotateCw, Home, ArrowLeft, Trophy } from "lucide-react"
+import { RotateCw, Home, ArrowLeft, Crosshair, Trophy } from "lucide-react"
 import type { Score, Target } from "../types"
 import styles from './Gameboard.module.css'
 import LeaderboardModal from "../components/LeaderboardModal"
@@ -307,12 +307,14 @@ export default function GameBoard({mode}: GameBoardProps) {
                 <button className={styles.actionButton} onClick={playGame}>
                     <RotateCw className={styles.actionIcon} strokeWidth={2.5} />
                 </button>
-                {mode === "rhythm" && (
-                    <div className={styles.scoreDisplay}>
-                        <Trophy className={styles.scoreIcon} strokeWidth={2.5} />
-                        <span className={styles.scoreValue}>{rhythmScore}</span>
-                    </div>
-                )}
+                { 
+                    (mode === "blitz" || mode === "rhythm") && (
+                        <div className={styles.scoreDisplay}>
+                            {mode === "rhythm" ? <Trophy className={styles.scoreIcon} strokeWidth={2.5} /> : <Crosshair className={styles.scoreIcon} strokeWidth={2.5} />}
+                            <span className={styles.scoreValue}>{mode === "rhythm" ? rhythmScore : clickedTargets.size}</span>
+                        </div>
+                    )
+                }
                 <button className={`${styles.actionButton} ${styles.homeButton}`} onClick={() => navigate("/")}>
                     <Home className={styles.actionIcon} strokeWidth={2.5} />
                 </button>
