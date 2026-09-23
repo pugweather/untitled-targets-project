@@ -1,6 +1,8 @@
 import { Star, ArrowLeft, Trophy } from "lucide-react"
 import { COURSES } from "../data/courses"
+import { useState, Fragment } from "react"
 import { useNavigate, useSearchParams } from "react-router"
+import LeaderboardModal from "../components/LeaderboardModal"
 import styles from "./SelectCourse.module.css"
 
 function difficultyColor(d: number) {
@@ -10,6 +12,8 @@ function difficultyColor(d: number) {
 }
 
 export default function SelectCourse() {
+
+    const [showLeaderboardCourseId, setShowLeaderboardCourseId] = useState<number | null>(null)
 
     const navigate = useNavigate()
     const [searchParams] = useSearchParams()
@@ -50,7 +54,7 @@ export default function SelectCourse() {
                         const color = difficultyColor(course.difficulty)
 
                         return (
-                            <>
+                            <Fragment key={course.courseId}>
                                 <div key={course.courseId} className={styles.card}>
                                     <img
                                         src={course.image}
@@ -70,11 +74,8 @@ export default function SelectCourse() {
                                             ))}
                                         </div>
                                     </div>
-                                    <div>
-                                        HiScore: 0 loulousadge{`:(`}
-                                    </div>
                                     <div className={styles.playAction}>
-                                        <button className={styles.leaderboardButton} aria-label="Leaderboard">
+                                        <button className={styles.leaderboardButton} aria-label="Leaderboard" onClick={() => setShowLeaderboardCourseId(course.courseId)}>
                                             <Trophy size={20} />
                                         </button>
                                         <button className={styles.playButton} onClick={() => navigate(`/game/${mode}/${course.courseId}`)}>
@@ -82,8 +83,10 @@ export default function SelectCourse() {
                                         </button>
                                     </div>
                                 </div>
-                                {/* <LeaderboardModal recentScore={recentScore} course={course} mode={mode} onRestart={playGame} onClose={() => setShowLeaderboard(false)}/> */}
-                            </>
+                                {showLeaderboardCourseId === course.courseId && (
+                                    <LeaderboardModal course={course} mode={mode} onClose={() => setShowLeaderboardCourseId(null)}/>
+                                )}
+                            </Fragment>
                         )
                     })}
                 </div>
