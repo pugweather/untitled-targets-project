@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, Fragment } from "react"
 import { useNavigate, useParams } from "react-router"
-import { RotateCw, Home, ArrowLeft, Crosshair, Trophy } from "lucide-react"
+import { RotateCw, Home, ArrowLeft, Trophy } from "lucide-react"
 import type { Score, Target } from "../types"
 import styles from './Gameboard.module.css'
 import LeaderboardModal from "../components/LeaderboardModal"

@@ -47,8 +47,6 @@ export default function SelectCourse() {
                 <div className={styles.list}>
                     {COURSES.map(course => {
 
-                        const key = "course-" + course.courseId + "-mode-" + mode
-                        const score = JSON.parse(localStorage.getItem(key) || '[]')
                         const color = difficultyColor(course.difficulty)
 
                         return (
