@@ -74,14 +74,14 @@ export function FadingTarget({target, mode, clicked, feedback, onFadeEnd}: Fadin
     }, [])
 
     return (
-        <div ref={containerRef} className={`${styles.fadingTargetContainer} ${mode === "v3" ? styles.fadingTargetContainerV3 : ''}`} style={{ left: target.left + '%', top: target.top + '%' }}>
+        <div ref={containerRef} className={`${styles.fadingTargetContainer} ${mode === "rhythm" ? styles.fadingTargetContainerRhythm : ''}`} style={{ left: target.left + '%', top: target.top + '%' }}>
             <div className={`${styles.fadingTargetText} ${feedback ? (feedback === "PERFECT" ? styles.perfect : styles.good) : ''}`}>
                 {feedback ? (feedback === "PERFECT" ? "PERFECT" : "GOOD") : ''}
             </div>
             <div
-                className={`${mode === "v3" ? styles.fadingTargetVisualV3 : styles.fadingTargetVisual} ${mode === "v1" ? styles.step0 : ''} ${isExiting ? clicked ? styles.pop : styles.miss : ''}`}
+                className={`${mode === "rhythm" ? styles.fadingTargetVisualRhythm : styles.fadingTargetVisual} ${mode === "v1" ? styles.step0 : ''} ${isExiting ? clicked ? styles.pop : styles.miss : ''}`}
             >
-                {mode === "v3" && <span className={styles.targetNumber}>{target.position ?? ':)'}</span>}
+                {mode === "rhythm" && <span className={styles.targetNumber}>{target.position ?? ':)'}</span>}
             </div>
             {clicked && Array.from({ length: FRAGMENT_COUNT }, (_, i) => <CrumbleFragment key={i} />)}
         </div>

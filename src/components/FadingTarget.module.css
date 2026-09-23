@@ -27,7 +27,7 @@
   border-radius: 9px;
 }
 
-.fadingTargetContainerV3 {
+.fadingTargetContainerRhythm {
   color: #82f5d2;
 }
 
@@ -39,7 +39,7 @@
   box-shadow: 0 0 16px 4px currentColor;
 }
 
-.fadingTargetVisualV3 {
+.fadingTargetVisualRhythm {
   position: absolute;
   inset: 0;
   display: flex;
@@ -58,11 +58,11 @@
   animation: pop 0.2s ease-in forwards;
 }
 
-.fadingTargetVisualV3.pop {
+.fadingTargetVisualRhythm.pop {
   animation: pop 0.2s ease-in forwards;
 }
 
-.fadingTargetVisualV3.miss {
+.fadingTargetVisualRhythm.miss {
   background: radial-gradient(circle at 30% 30%, #4a2430 0%, #250f15 100%);
   border-color: #f58282;
   box-shadow:
@@ -71,7 +71,7 @@
   animation: miss 0.25s ease-out forwards;
 }
 
-.fadingTargetVisualV3.miss .targetNumber {
+.fadingTargetVisualRhythm.miss .targetNumber {
   color: #ffdcdc;
   text-shadow: 0 0 4px rgba(245, 130, 130, 0.8);
   display: inline-block;

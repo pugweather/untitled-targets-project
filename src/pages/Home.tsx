@@ -67,14 +67,13 @@ export default function Home() {
     const MENU_OPTIONS = [
         {
             id: "1",
-            name: "Frenzy",
+            name: "Blitz",
             path: "/select-course"
         },
         {
             id: "2",
-            name: "MusicMania",
-            path: "",
-            isDisabled: true,
+            name: "Rhythm",
+            path: "/select-course"
         },
         {
             id: "3",
@@ -156,7 +155,7 @@ export default function Home() {
                     {
                         MENU_OPTIONS.map(opt => {
                             return (
-                                <li key={opt.id} onClick={() => navigate(opt.path)}>
+                                <li key={opt.id} onClick={() => navigate(`${opt.path}?mode=${opt.name}`)}>
                                     <button className={`${styles.modeItem} ${opt.isDisabled ? styles.modeItemDisabled : ''}`}>{opt.name}</button>
                                 </li>
                             )

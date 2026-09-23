@@ -10,8 +10,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/select-course" element={<SelectCourse />} />
         <Route path="/game/v1/:courseId" element={<GameBoard mode={"v1"}/>} />
-        <Route path="/game/v2/:courseId" element={<GameBoard mode={"v2"}/>} />
-        <Route path="/game/v3/:courseId" element={<GameBoard mode={"v3"}/>} />
+        <Route path="/game/blitz/:courseId" element={<GameBoard mode={"blitz"}/>} />
+        <Route path="/game/rhythm/:courseId" element={<GameBoard mode={"rhythm"}/>} />
         {/* <Route path="/game" element={<GameBoard />} /> */}
       </Routes>
     </BrowserRouter>

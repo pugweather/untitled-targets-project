@@ -6,7 +6,7 @@ export const COURSES: Course[] = [
         title: "First Verse",
         difficulty: 1,
         image: "/courses/riff-cascade.png",
-        supportsV3: false,
+        supportsRhythmMode: false,
         targets: [
             // clump 1
             { left: 9, top: 15, spawnTime: 0.0, despawnTime: 2.5 },
@@ -51,7 +51,7 @@ export const COURSES: Course[] = [
         title: "Hill Runner",
         difficulty: 3,
         image: "/courses/hill-runner.png",
-        supportsV3: true,
+        supportsRhythmMode: true,
         targets: [
             // verse 1: wide horizontal zigzag, big vertical swings
             { left: 10, top: 25, spawnTime: 0.2, hitTime: 0.8, despawnTime: 1.05, position: 1 },
@@ -106,7 +106,7 @@ export const COURSES: Course[] = [
         title: "Riff Cascade",
         difficulty: 8,
         image: "/courses/zigzag.png",
-        supportsV3: true,
+        supportsRhythmMode: true,
         targets: [
             { left: 15, top: 18, spawnTime: 0.00, hitTime: 0.85, despawnTime: 1.20, position: 1 },
             { left: 22, top: 12, spawnTime: 0.22, hitTime: 1.07, despawnTime: 1.42, position: 2 },

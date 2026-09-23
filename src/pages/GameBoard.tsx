@@ -42,17 +42,17 @@ export default function GameBoard({mode}: GameBoardProps) {
 
     /* Target visibility */
 
-    // V1
+    // Mode: v1 (will change this mode to function more like gridshot / piano tiles)
     const [targetsRange, setTargetsRange] = useState([0, NUM_TARGETS_TO_SHOW])
     const [firstTargIdx, lastTargIdx] = targetsRange
-    const [v3Score, setV3Score] = useState(0)
+    const [rhythmScore, setRhythmScore] = useState(0)
 
-    // V2
+    // Mode: Blitz
     const [playedIndices, setPlayedIndices] = useState(new Set())
     const [clickedTargets, setClickedTargets] = useState(new Set())
     const alreadyFinished = useRef<boolean>(false)
 
-    // V3
+    // Mode: Rhythm
     const timeOfGameStart = useRef<number | null>(null)
 
     // Shared Version state
@@ -93,7 +93,7 @@ export default function GameBoard({mode}: GameBoardProps) {
             setTimer(newTime)
         }, 100)
 
-        if (mode === "v2") {
+        if (mode === "blitz") {
             const newPlayedIndices = new Set(playedIndices)
             targets.forEach((t, idx) => {
                 if (t.despawnTime !== undefined && timer >= t.despawnTime) {
@@ -108,7 +108,7 @@ export default function GameBoard({mode}: GameBoardProps) {
             setPlayedIndices(newPlayedIndices)
         }
 
-        if (mode === "v3") {
+        if (mode === "rhythm") {
             const newPlayedIndices = new Set(playedIndices)
             targets.forEach((t, idx) => {
                 if (t.despawnTime !== undefined && timer >= t.despawnTime) {
@@ -140,7 +140,7 @@ export default function GameBoard({mode}: GameBoardProps) {
 
         // const clickedTarg: Target | undefined = visibleTargets[idx]
         if (clickedTarg) {
-            if (mode === "v2" || mode === "v3") {
+            if (mode === "blitz" || mode === "rhythm") {
                 const clickedIdx = targets.findIndex(t => t === clickedTarg)
                 if (clickedIdx !== -1) {
                     const newPlayedIndices = new Set(playedIndices)
@@ -153,7 +153,7 @@ export default function GameBoard({mode}: GameBoardProps) {
             }
 
             let feedback: string | undefined
-            if (mode === "v3") {
+            if (mode === "rhythm") {
                 if (clickedTarg.hitTime === undefined || clickedTarg.despawnTime === undefined || timeOfGameStart.current === null) {
                     throw new Error("ERROR: either timeOfGameStart is null, OR target at index " + idx + " requires hit time and despawn time")
                 }
@@ -175,7 +175,7 @@ export default function GameBoard({mode}: GameBoardProps) {
                         feedback = "GOOD"
                     }
                 }
-                setV3Score(prev => feedback === "PERFECT" ? prev + 100 : prev + 70)
+                setRhythmScore(prev => feedback === "PERFECT" ? prev + 100 : prev + 70)
             }
             setFadingTargets(prev => prev.some(t => 
                 t.left === clickedTarg.left && 
@@ -221,18 +221,18 @@ export default function GameBoard({mode}: GameBoardProps) {
                     rawTime: timer
                 } 
 
-            } else if (mode === "v2") {
+            } else if (mode === "blitz") {
                 newScore = {
-                    mode: "v2",
+                    mode: "blitz",
                     date,
                     score: clickedTargets.size,
                 }
-            } else if (mode === "v3") {
+            } else if (mode === "rhythm") {
                 // TODO: update to support score?
                 newScore = {
-                    mode: "v3",
+                    mode: "rhythm",
                     date,
-                    score: v3Score,
+                    score: rhythmScore,
                 }
             } else {
                 throw new Error("Unexpected mode: " + mode)
@@ -242,11 +242,11 @@ export default function GameBoard({mode}: GameBoardProps) {
 
             if (mode === "v1") {
                 scores.sort((a,b) => a.mode === "v1" && b.mode === "v1" ? a.rawTime - b.rawTime : 0)
-            } else if (mode === "v2") {
-                scores.sort((a,b) => a.mode === "v2" && b.mode === "v2" ? b.score - a.score : 0)
-            } else if (mode === "v3") {
+            } else if (mode === "blitz") {
+                scores.sort((a,b) => a.mode === "blitz" && b.mode === "blitz" ? b.score - a.score : 0)
+            } else if (mode === "rhythm") {
                 // TODO: eventually update to points based on click timing
-                scores.sort((a,b) => a.mode === "v3" && b.mode === "v3" ? b.score - a.score : 0)
+                scores.sort((a,b) => a.mode === "rhythm" && b.mode === "rhythm" ? b.score - a.score : 0)
             }
             localStorage.setItem(key, JSON.stringify(scores))
 
@@ -280,7 +280,7 @@ export default function GameBoard({mode}: GameBoardProps) {
         setPlayedIndices(new Set())
         setClickedTargets(new Set())
         setRecentScore(null)
-        setV3Score(0)
+        setRhythmScore(0)
         timeOfGameStart.current = null
         alreadyFinished.current = false
     }
@@ -288,10 +288,10 @@ export default function GameBoard({mode}: GameBoardProps) {
     function getRecentScore() {
         if (mode === "v1") {
             return timerText
-        } else if (mode === "v2") {
+        } else if (mode === "blitz") {
             return clickedTargets.size + ' / ' + targets.length
-        } else if (mode === "v3") {
-            return v3Score
+        } else if (mode === "rhythm") {
+            return rhythmScore
         }
         return "N/A"
     }
@@ -307,16 +307,10 @@ export default function GameBoard({mode}: GameBoardProps) {
                 <button className={styles.actionButton} onClick={playGame}>
                     <RotateCw className={styles.actionIcon} strokeWidth={2.5} />
                 </button>
-                {mode === "v2" && (
-                    <div className={styles.scoreDisplay}>
-                        <Crosshair className={styles.scoreIcon} strokeWidth={2.5} />
-                        <span className={styles.scoreValue}>{clickedTargets.size}</span>
-                    </div>
-                )}
-                {mode === "v3" && (
+                {mode === "rhythm" && (
                     <div className={styles.scoreDisplay}>
                         <Trophy className={styles.scoreIcon} strokeWidth={2.5} />
-                        <span className={styles.scoreValue}>{v3Score}</span>
+                        <span className={styles.scoreValue}>{rhythmScore}</span>
                     </div>
                 )}
                 <button className={`${styles.actionButton} ${styles.homeButton}`} onClick={() => navigate("/")}>
@@ -335,14 +329,14 @@ export default function GameBoard({mode}: GameBoardProps) {
                 {visibleTargets.map((targ, idx) => (
                     <Fragment key={`${targ.left}-${targ.top}-${targ.spawnTime}`}>
                         <div
-                            className={`${mode === "v3" ? styles.targetV3 : styles.target} ${mode === "v3" && targ.hitTime !== undefined && timer > targ.hitTime ? styles.aboutToDespawn : '' } ${mode === "v1" ? styles[`step${idx}`] : ''}`}
+                            className={`${mode === "rhythm" ? styles.targetRhythm : styles.target} ${mode === "rhythm" && targ.hitTime !== undefined && timer > targ.hitTime ? styles.aboutToDespawn : '' } ${mode === "v1" ? styles[`step${idx}`] : ''}`}
                             style={{ left: targ.left + '%', top: targ.top + '%' }}
                             onMouseDown={() => clickTarget(targ, idx)}
                             // onTransitionEnd={exiting && idx === 0 ? (e) => handleFadeEnd(targ, e) : undefined}
                         >
-                            {mode === "v3" && <span className={styles.targetNumber}>{targ.position ?? ':)'}</span>}
+                            {mode === "rhythm" && <span className={styles.targetNumber}>{targ.position ?? ':)'}</span>}
                         </div>
-                       {mode === "v3" && <TargetRing target={targ} timer={timer} />}
+                       {mode === "rhythm" && <TargetRing target={targ} timer={timer} />}
                     </Fragment>
                 ))}
                 {

@@ -29,7 +29,7 @@ export type Course = {
     title: string,
     difficulty: number,
     image: string,
-    supportsV3?: boolean,
+    supportsRhythmMode?: boolean,
     targets: Target[]
 }
 
@@ -41,5 +41,5 @@ export type Course = {
 
 export type Score =
     | { mode: "v1"; date: string; time: string; rawTime: number }
-    | { mode: "v2"; date: string; score: number }
-    | { mode: "v3"; date: string; score: number }
+    | { mode: "blitz"; date: string; score: number }
+    | { mode: "rhythm"; date: string; score: number }
